@@ -1,0 +1,54 @@
+font:
+  normal:
+    family: UbuntuMono
+    style: Regular
+
+  bold:
+    family: UbuntuMono
+    style: Bold
+
+  italic:
+    family: UbuntuMono
+    style: Italic
+
+  bold_italic:
+    family: UbuntuMono
+    style: Bold Italic
+
+  size: 13
+
+colors:
+  # Default colors
+  primary:
+    background: '#282828'
+    foreground: '#eeeeee'
+
+  # Normal colors
+  normal:
+    black:   '#282828'
+    red:     '#f43753'
+    green:   '#c9d05c'
+    yellow:  '#ffc24b'
+    blue:    '#b3deef'
+    magenta: '#d3b987'
+    cyan:    '#73cef4'
+    white:   '#eeeeee'
+
+  # Bright colors
+  bright:
+    black:   '#4c4c4c'
+    red:     '#f43753'
+    green:   '#c9d05c'
+    yellow:  '#ffc24b'
+    blue:    '#b3deef'
+    magenta: '#d3b987'
+    cyan:    '#73cef4'
+    white:   '#feffff'
+cursor:
+  style: Beam
+
+scrolling:
+  # maximum number of lines in the scrollback buffer. Specifying '0' will
+  # disable scrolling.
+  history: 50000
+
