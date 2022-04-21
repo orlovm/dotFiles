@@ -94,7 +94,7 @@ groups = [
               # define a drop down terminal.
               # it is placed in the upper third of screen by default.
               DropDown("term", "alacritty --config-file /home/mikhail/.alacritty_quake.yml",
-                       opacity=0.0,),
+                       opacity=0.5,),
               ]),
           Group("DEV", layout='columns'),
           Group("WWW", layout='monadtall'),
@@ -181,6 +181,9 @@ screens = [
             ],
             24,
         ),
+
+        wallpaper='~/wp.jpg',
+        wallpaper_mode='stretch',
     ),
     Screen(
         bottom=bar.Bar(

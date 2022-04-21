@@ -52,7 +52,7 @@ scrolling:
   # disable scrolling.
   history: 50000
 window:
-  opacity: 0.0
+  opacity: 0.9
   padding:
     x: 20
     y: 20
