@@ -16,34 +16,34 @@ font:
     style: Bold Italic
 
   size: 13
-
 colors:
   # Default colors
   primary:
-    background: '#282828'
-    foreground: '#eeeeee'
+    background: '#151515'
+    foreground: '#cccccc'
 
   # Normal colors
   normal:
-    black:   '#282828'
-    red:     '#f43753'
-    green:   '#c9d05c'
-    yellow:  '#ffc24b'
-    blue:    '#b3deef'
-    magenta: '#d3b987'
-    cyan:    '#73cef4'
-    white:   '#eeeeee'
+    black:   '#222222'
+    red:     '#e84f4f'
+    green:   '#c1ce42'
+    yellow:  '#fe8e3c'
+    blue:    '#66a9b9'
+    magenta: '#b7416e'
+    cyan:    '#6d878d'
+    white:   '#cccccc'
 
   # Bright colors
   bright:
-    black:   '#4c4c4c'
-    red:     '#f43753'
-    green:   '#c9d05c'
-    yellow:  '#ffc24b'
-    blue:    '#b3deef'
-    magenta: '#d3b987'
-    cyan:    '#73cef4'
-    white:   '#feffff'
+    black:   '#666666'
+    red:     '#d23d3d'
+    green:   '#cde077'
+    yellow:  '#ffba63'
+    blue:    '#aaccbb'
+    magenta: '#e16a98'
+    cyan:    '#42717b'
+    white:   '#ffffff'
+
 cursor:
   style: Beam
 
@@ -52,3 +52,7 @@ scrolling:
   # disable scrolling.
   history: 50000
 
+window:
+  padding:
+    x: 0
+    y: 0

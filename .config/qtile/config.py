@@ -45,7 +45,7 @@ groups = [
               # define a drop down terminal.
               # it is placed in the upper third of screen by default.
               DropDown("term", "alacritty --config-file /home/mikhail/.alacritty_quake.yml",
-                       opacity=0.0,),
+                       opacity=1,),
               ]),
           Group("DEV", layout='columns'),
           Group("WWW", layout='monadtall'),
@@ -142,31 +142,13 @@ keys = [
         ),
 ]
 
-groups = [
-         ScratchPad("scratchpad", [
-              # define a drop down terminal.
-              # it is placed in the upper third of screen by default.
-              DropDown("term", "alacritty --config-file /home/mikhail/.alacritty_quake.yml",
-                       opacity=0.5,),
-              ]),
-          Group("DEV", layout='columns'),
-          Group("WWW", layout='monadtall'),
-          Group("SYS", layout='monadtall'),
-          Group("SYS", layout='monadtall'),
-          Group("DOC", layout='monadtall'),
-          Group("OTH", layout='monadtall'),
-          Group("CHAT", layout='monadtall'),
-          Group("MUS", layout='monadtall'),
-          Group("VID", layout='monadtall'),
-          Group("GFX", layout='floating')]
-
 # Allow MODKEY+[0 through 9] to bind to groups, see https://docs.qtile.org/en/stable/manual/config/groups.html
 # MOD4 + index Number : Switch to Group[index]
 # MOD4 + shift + index Number : Send active window to another Group
 from libqtile.dgroups import simple_key_binder
 dgroups_key_binder = simple_key_binder("mod4")
 
-layout_theme = {"border_width": 2,
+layout_theme = {"border_width": 1,
                 "border_focus": "215578",
                 "border_normal": "1D2330"
                 }
@@ -234,7 +216,6 @@ screens = [
             ],
             24,
         ),
-
         wallpaper='~/wp.jpg',
         wallpaper_mode='stretch',
     ),
