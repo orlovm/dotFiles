@@ -1,3 +1,9 @@
+"##############################################################################"
+"######################### github.com/OrlovM's vimrc ##########################"
+"##############################################################################"
+
+
+"################################ Vim settings ################################"
 "no beep
 set visualbell
 "Unicode
@@ -5,6 +11,7 @@ scriptencoding utf-8
 set encoding=utf-8
 " Not compatible with vi
 set nocompatible
+
 " Syntax detection
 syntax on
 " Give more space for displaying messages.
@@ -70,6 +77,7 @@ set exrc
 " and autocmd from local dir .vimrc files
 set secure
 
+set nu nornu
 " show line numbers
 augroup numbertoggle
   autocmd!
@@ -77,7 +85,11 @@ augroup numbertoggle
   autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu                  | set nornu | endif
 augroup END
 
-" Plugins declaration
+
+"##############################################################################"
+"################################## Plugins ###################################"
+"##############################################################################"
+
 if has('nvim')
   call plug#begin('~/.nvim/plugged')
 else
@@ -156,7 +168,7 @@ Plug 'b4b4r07/vim-sqlfmt', { 'do': 'pip install sqlparse' }
 Plug 'chrisbra/csv.vim'
 
 " DB UI
-Plug 'kristijanhusak/vim-dadbod-ui', { 'on': 'DBUI' }
+Plug 'kristijanhusak/vim-dadbod-ui', {'on': 'DBUIToggle'}
 
 " Color scheme
 Plug 'junegunn/seoul256.vim'
@@ -208,7 +220,10 @@ Plug 'tpope/vim-surround'
 Plug 'jsborjesson/vim-uppercase-sql'
 call plug#end()
 
-""" Mappings
+
+"##############################################################################"
+"################################## Mappings ##################################"
+"##############################################################################"
 
 "Mapping tab character to Shift+Tab
 inoremap <S-Tab> <C-V><Tab>
@@ -230,8 +245,12 @@ vnoremap <Tab> >gv
 nnoremap <Space> <PageDown>
 
 nnoremap tg :TagbarToggle<CR>
-"
-""" Plugin config
+
+autocmd FileType go nmap <leader>e :GoIfErr<CR>
+
+"##############################################################################"
+"############################## Plugins config ################################"
+"##############################################################################"
 
 let g:db_ui_use_nerd_fonts = 1
 let g:db_ui_show_database_icon = 1
@@ -309,16 +328,13 @@ nmap <leader>qf  <Plug>(coc-fix-current)
 " Run the Code Lens action on the current line.
 nmap <leader>cl  <Plug>(coc-codelens-action)
 
-"noremap <C-J> :bnext<CR>
-"nnoremap <C-K> :bprev<CR>
 map <leader>b :Buffers<CR>
 
-"DB settings
-let g:dbs = {
-      \'test': '',
-      \'replica': '',
-      \'prod': ''
-      \} 
+" DBUI
+nnoremap <C-d> :DBUIToggle<CR>
+
+
+
 
 "SQL formatter config
 let g:sqlfmt_command = "sqlformat"
@@ -458,3 +474,29 @@ command! BD call fzf#run(fzf#wrap({
   \ 'sink*': { lines -> s:delete_buffers(lines) },
   \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
 \ }))
+
+
+"##############################################################################"
+"################################### Utils ####################################"
+"##############################################################################"
+
+" Function to make headers
+function Header(width, word)
+    let l:hash_line = repeat('#', a:width - 2)
+
+    :put ='\"'.l:hash_line.'\"'
+    call SubHeader(a:width, a:word)
+    :put ='\"'.l:hash_line.'\"'
+endfunction
+
+function SubHeader(width, word)
+    let l:inserted_word = ' ' . a:word . ' '
+    let l:word_width = strlen(l:inserted_word)
+    let l:length_before = (a:width - l:word_width) / 2
+    let l:hashes_before = repeat('#', l:length_before - 1)
+    let l:hashes_after = repeat('#', a:width - (l:word_width + l:length_before) - 1)
+    let l:length_before = (a:width - l:word_width) / 2
+    let l:word_line = l:hashes_before . l:inserted_word . l:hashes_after
+
+    :put ='\"'.l:word_line.'\"'
+endfunction

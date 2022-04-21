@@ -35,9 +35,32 @@ from libqtile import layout, bar, widget, hook
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 from typing import List  # noqa: F401from typing import List  # noqa: F401
+from libqtile.dgroups import simple_key_binder
 
 mod = "mod4"
 terminal = guess_terminal()
+
+groups = [
+         ScratchPad("scratchpad", [
+              # define a drop down terminal.
+              # it is placed in the upper third of screen by default.
+              DropDown("term", "alacritty --config-file /home/mikhail/.alacritty_quake.yml",
+                       opacity=0.0,),
+              ]),
+          Group("DEV", layout='columns'),
+          Group("WWW", layout='monadtall'),
+          Group("SYS", layout='monadtall'),
+          Group("OTH", layout='monadtall'),
+          Group("CHAT", layout='monadtall'),
+          Group("DOC", layout='monadtall'),
+          Group("MUS", layout='monadtall'),
+          Group("VID", layout='monadtall'),
+          Group("GFX", layout='floating')]
+
+# Allow MODKEY+[0 through 9] to bind to groups, see https://docs.qtile.org/en/stable/manual/config/groups.html
+# MOD4 + index Number : Switch to Group[index]
+# MOD4 + shift + index Number : Send active window to another Group
+dgroups_key_binder = simple_key_binder("mod4")
 
 keys = [
     # A list of available commands that can be bound to keys can be found
@@ -77,16 +100,46 @@ keys = [
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod], "t", lazy.group['scratchpad'].dropdown_toggle('term')),
-    Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-         Key([mod], "r",
-             lazy.spawn("dmenu_run -p 'Run: '"),
-             desc='Run Launcher'
-             ),
-         ### Switch focus of monitors
-         Key([mod], "space",
-             lazy.next_screen(),
-             desc='Move focus to next monitor'
-             ),
+    # Volume control
+    Key(
+        [], "XF86AudioRaiseVolume",
+        lazy.spawn("amixer -c 0 -q set Master 2dB+")
+    ),
+    Key(
+        [], "XF86AudioLowerVolume",
+        lazy.spawn("amixer -c 0 -q set Master 2dB-")
+    ),
+    Key(
+        [], "XF86AudioMute",
+        lazy.spawn("amixer -c 0 -q set Master toggle")
+    ),
+    # Switch screen
+    Key([mod], "r",
+        lazy.spawn("dmenu_run -p 'Run: '"),
+        desc='Run Launcher'
+        ),
+    ### Switch focus of monitors
+    Key([mod], "space",
+        lazy.next_screen(),
+        desc='Move focus to next monitor'
+        ),
+    # Dmenu scripts 
+    Key([mod, "control"], "k",
+        lazy.spawn("dm-kill"),
+        desc='Kill processes via dmenu'
+        ),
+    Key([mod, "control"], "q",
+        lazy.spawn("dm-logout"),
+        desc='A logout menu'
+        ),
+    Key([mod], "e",
+        lazy.spawn("dm-confedit"), 
+        desc='Choose a config file to edit'
+        ),
+    Key([mod], "i",
+        lazy.spawn("dm-maim"),
+        desc='Take screenshots via dmenu'
+        ),
 ]
 
 groups = [
@@ -166,7 +219,7 @@ screens = [
                     ),
                 widget.Chord(
                     chords_colors={
-                        "launch": ("#ff0000", "#ffffff"),
+                        "launch": ("#ff0000", "#ff00ff"),
                     },
                     name_transform=lambda name: name.upper(),
                 ),

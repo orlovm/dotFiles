@@ -1,0 +1,39 @@
+{
+  "go.goplsPath":"/home/mikhail/go/bin/gopls",
+  "diagnostic.messageTarget": "echo",
+  "diagnostic.level":"hint",
+  "diagnostic.refreshOnInsertMode": true,
+  "diagnostic.checkCurrentLine":true,
+  "diagnostic.signLevel":"warning",
+  "diagnostic.virtualText": true,
+  "cSpellExt.enableDictionaries":["russian"],
+  "cSpell.language": "en,ru",
+  "sql.database":"mysql",
+  "languageserver": {
+    "golangci-lint-languageserver": {
+      "command": "golangci-lint-langserver",
+      "filetypes": ["go"],
+      "initializationOptions": {
+        "command": ["golangci-lint", "run", "--enable-all", "--disable", "lll,exhaustivestruct", "--out-format", "json"]
+      }
+    }
+  },
+  "cSpell.userWords": [
+    "SKUs",
+    "excelize",
+    "golangci",
+    "gopls",
+    "gorm",
+    "Дата",
+    "Некорректый",
+    "Несколько",
+    "Одно",
+    "деактивации",
+    "значение",
+    "значений",
+    "маршрута",
+    "проекта",
+    "точки",
+    "через"
+  ]
+}
