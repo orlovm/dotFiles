@@ -64,6 +64,9 @@ endif
 set scrolljump=8
 set scrolloff=8
 
+"Fix Sizing Bug With Alacritty Terminal
+autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
+
 autocmd FileType go,js,vim setlocal colorcolumn=80
 
 " Tabs config
@@ -161,8 +164,6 @@ Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': function('InstallCocPlugs'
 
 " DB
 Plug 'tpope/vim-dadbod'
-
-"SQL formatter
 Plug 'b4b4r07/vim-sqlfmt', { 'do': 'pip install sqlparse' }
 
 Plug 'chrisbra/csv.vim'
@@ -331,7 +332,7 @@ nmap <leader>cl  <Plug>(coc-codelens-action)
 map <leader>b :Buffers<CR>
 
 " DBUI
-nnoremap <C-d> :DBUIToggle<CR>
+nnoremap <leader>d :DBUIToggle<CR>
 
 
 

@@ -113,12 +113,22 @@ keys = [
         [], "XF86AudioMute",
         lazy.spawn("amixer -c 0 -q set Master toggle")
     ),
-    # Switch screen
     Key([mod], "r",
         lazy.spawn("dmenu_run -p 'Run: '"),
         desc='Run Launcher'
         ),
-    ### Switch focus of monitors
+    Key([mod], "b",
+        lazy.spawn("google-chrome"),
+        desc='Run browser'
+        ),
+    Key([mod], "c",
+        lazy.spawn("telegram-desktop"),
+        desc='Run chat'
+        ),
+    Key([mod], "f",
+        lazy.spawn("pcmanfm"),
+        desc='Run fm'
+        ),
     Key([mod], "space",
         lazy.next_screen(),
         desc='Move focus to next monitor'
@@ -148,7 +158,7 @@ keys = [
 from libqtile.dgroups import simple_key_binder
 dgroups_key_binder = simple_key_binder("mod4")
 
-layout_theme = {"border_width": 1,
+layout_theme = {"border_width": 2,
                 "border_focus": "215578",
                 "border_normal": "1D2330"
                 }
@@ -188,7 +198,10 @@ screens = [
                        highlight_method = "border",
                        urgent_alert_method = "line",
                        urgent_text = "#316588",
-                       urgent_border = "#316588"
+                       urgent_border = "#316588",
+                       fontsize=11,
+                       margin_y=4,
+                       padding_y=1,
                     ),
                 widget.CurrentScreen(
                        active_color="#2090ff",
@@ -214,7 +227,7 @@ screens = [
                     ),
                 widget.Clock(format="%Y-%m-%d %a %H:%M"),
             ],
-            24,
+            18,
         ),
         wallpaper='~/wp.jpg',
         wallpaper_mode='stretch',
@@ -228,7 +241,10 @@ screens = [
                        highlight_method = "border",
                        urgent_alert_method = "line",
                        urgent_text = "#316588",
-                       urgent_border = "#316588"
+                       urgent_border = "#316588",
+                       fontsize=11,
+                       margin_y=4,
+                       padding_y=1,
                     ),
                 widget.CurrentScreen(
                        active_color="#2090ff",
@@ -245,8 +261,10 @@ screens = [
                     name_transform=lambda name: name.upper(),
                 ),
             ],
-            24,
+            18,
         ),
+        wallpaper='~/wp.jpg',
+        wallpaper_mode='stretch',
     ),
 ]
 
