@@ -62,6 +62,9 @@ groups = [
 # MOD4 + shift + index Number : Send active window to another Group
 dgroups_key_binder = simple_key_binder("mod4")
 
+orange = "#E95420"
+gray = "#181818"
+
 keys = [
     # A list of available commands that can be bound to keys can be found
     # at https://docs.qtile.org/en/latest/manual/config/lazy.html
@@ -159,8 +162,8 @@ from libqtile.dgroups import simple_key_binder
 dgroups_key_binder = simple_key_binder("mod4")
 
 layout_theme = {"border_width": 2,
-                "border_focus": "215578",
-                "border_normal": "1D2330"
+                "border_focus": orange,
+                "border_normal": "#151515",
                 }
 
 # border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=4
@@ -188,28 +191,37 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
+def initGroupBox():
+    return widget.GroupBox(
+                  borderwidth = 2,
+                  highlight_method = "block",
+                  urgent_alert_method = "text",
+                  urgent_text = orange,
+                  urgent_border = "#316588",
+                  this_current_screen_border = orange,
+                  this_screen_border = orange,
+                  disable_drag=True,
+                  fontsize=11,
+                  margin_y=3,
+                  padding_y=1,
+               )
+
+def initCurScreen():
+     return   widget.CurrentScreen(
+               active_color=orange,
+               inactive_text="",
+               active_text="",
+               inactive_color=gray,
+               fontsize=25,
+            )
+
 screens = [
     Screen(
         bottom=bar.Bar(
             [
                 widget.CurrentLayout(),
-                widget.GroupBox(
-                       borderwidth = 2,
-                       highlight_method = "border",
-                       urgent_alert_method = "line",
-                       urgent_text = "#316588",
-                       urgent_border = "#316588",
-                       fontsize=11,
-                       margin_y=4,
-                       padding_y=1,
-                    ),
-                widget.CurrentScreen(
-                       active_color="#2090ff",
-                       inactive_text="",
-                       active_text="",
-                       inactive_color="#000000",
-                       fontsize=25,
-                    ),
+                initGroupBox(),
+                initCurScreen(),
                 widget.WindowName(
                     ),
                 widget.Chord(
@@ -218,6 +230,10 @@ screens = [
                     },
                     name_transform=lambda name: name.upper(),
                 ),
+                widget.Memory(
+                    measure_mem='G',
+                    format='{MemUsed: .0f}{mm}',
+                    ),
                 widget.Systray(
                     icon_size = 15,
                     ),
@@ -228,6 +244,7 @@ screens = [
                 widget.Clock(format="%Y-%m-%d %a %H:%M"),
             ],
             18,
+            background=gray,
         ),
         wallpaper='~/wp.jpg',
         wallpaper_mode='stretch',
@@ -236,23 +253,8 @@ screens = [
         bottom=bar.Bar(
             [
                 widget.CurrentLayout(),
-                widget.GroupBox(
-                       borderwidth = 2,
-                       highlight_method = "border",
-                       urgent_alert_method = "line",
-                       urgent_text = "#316588",
-                       urgent_border = "#316588",
-                       fontsize=11,
-                       margin_y=4,
-                       padding_y=1,
-                    ),
-                widget.CurrentScreen(
-                       active_color="#2090ff",
-                       inactive_text="",
-                       active_text="",
-                       inactive_color="#000000",
-                       fontsize=25,
-                    ),
+                initGroupBox(),
+                initCurScreen(),
                 widget.WindowName(),
                 widget.Chord(
                     chords_colors={
