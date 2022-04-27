@@ -28,17 +28,19 @@ import os
 import re
 import socket
 import subprocess
+from subprocess import check_output
 from libqtile import qtile
 from libqtile.config import Click, Drag, Group, KeyChord, Key, Match, Screen, ScratchPad, DropDown
 from libqtile.command import lazy
 from libqtile import layout, bar, widget, hook
+from libqtile.widget import base
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 from typing import List  # noqa: F401from typing import List  # noqa: F401
 from libqtile.dgroups import simple_key_binder
 
 mod = "mod4"
-terminal = guess_terminal()
+terminal = "alacritty"
 
 groups = [
          ScratchPad("scratchpad", [
@@ -64,6 +66,29 @@ dgroups_key_binder = simple_key_binder("mod4")
 
 orange = "#E95420"
 gray = "#181818"
+
+
+def VPNActive():
+    a = subprocess.check_output(['nmcli', "-f", "connection.id", "connection", "show", "--active", "id", "vpn"])
+    if a:
+        return True
+    else:
+        return False
+
+def toggle(qtile):
+    if VPNActive():
+        subprocess.call(['nmcli', 'con', 'down', 'id', 'vpn'])
+    else:
+        subprocess.call(['nmcli', 'con', 'up', 'id', 'vpn'])
+
+class Test(base.InLoopPollText):
+
+    def __init__(self, **config):
+        base.InLoopPollText.__init__(self, **config)
+        self.update_interval = 1
+
+    def poll(self):
+        return "VPN" if VPNActive() else ""
 
 keys = [
     # A list of available commands that can be bound to keys can be found
@@ -153,6 +178,10 @@ keys = [
         lazy.spawn("dm-maim"),
         desc='Take screenshots via dmenu'
         ),
+    Key([mod], "v",
+        lazy.function(toggle),
+        desc='Take screenshots via dmenu'
+        ),
 ]
 
 # Allow MODKEY+[0 through 9] to bind to groups, see https://docs.qtile.org/en/stable/manual/config/groups.html
@@ -224,6 +253,7 @@ screens = [
                 initCurScreen(),
                 widget.WindowName(
                     ),
+                widget.Notify(),
                 widget.Chord(
                     chords_colors={
                         "launch": ("#ff0000", "#ff00ff"),
@@ -234,6 +264,7 @@ screens = [
                     measure_mem='G',
                     format='{MemUsed: .0f}{mm}',
                     ),
+                Test(foreground=orange),
                 widget.Systray(
                     icon_size = 15,
                     ),
