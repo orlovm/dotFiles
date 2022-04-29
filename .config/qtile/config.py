@@ -264,6 +264,7 @@ screens = [
                 ),
             ],
             18,
+            background=gray,
         ),
         wallpaper='~/wp.jpg',
         wallpaper_mode='stretch',

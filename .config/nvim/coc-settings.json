@@ -14,12 +14,13 @@
       "command": "golangci-lint-langserver",
       "filetypes": ["go"],
       "initializationOptions": {
-        "command": ["golangci-lint", "run", "--enable-all", "--disable", "lll,exhaustivestruct", "--out-format", "json"]
+        "command": ["golangci-lint", "run", "--enable-all", "--disable", "lll,exhaustivestruct,varnamelen", "--out-format", "json"]
       }
     }
   },
   "cSpell.userWords": [
     "SKUs",
+    "Unscoped",
     "excelize",
     "golangci",
     "gopls",

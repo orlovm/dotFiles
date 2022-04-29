@@ -219,6 +219,8 @@ Plug 'mustache/vim-mustache-handlebars'
 Plug 'tpope/vim-surround'
 "uppercase SQL
 Plug 'jsborjesson/vim-uppercase-sql'
+
+Plug 'antoinemadec/coc-fzf'
 call plug#end()
 
 
@@ -334,8 +336,18 @@ map <leader>b :Buffers<CR>
 " DBUI
 nnoremap <leader>d :DBUIToggle<CR>
 
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
-
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  "autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder.
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
 
 "SQL formatter config
 let g:sqlfmt_command = "sqlformat"
@@ -476,6 +488,7 @@ command! BD call fzf#run(fzf#wrap({
   \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
 \ }))
 
+nnoremap <silent> <Leader>f :Ag <C-R><C-W><CR>
 
 "##############################################################################"
 "################################### Utils ####################################"
