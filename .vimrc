@@ -125,7 +125,7 @@ function! InstallCocPlugs(info)
 endfunction
 
 "tagbar
-Plug 'liuchengxu/vista.vim'
+Plug 'liuchengxu/vista.vim', {'on': 'Vista!!'}
 
 "Debugger
 if has('nvim')
@@ -261,6 +261,7 @@ let g:db_ui_show_database_icon = 1
 " Vista config
 let g:vista_default_executive = 'coc'
 let g:vista_echo_cursor_strategy = 'scroll'
+let g:vista_close_on_jump = 1
 nnoremap <leader>v :Vista!!<CR>
 
 "git blame config
@@ -332,9 +333,10 @@ nmap <leader>qf  <Plug>(coc-fix-current)
 nmap <leader>cl  <Plug>(coc-codelens-action)
 
 map <leader>b :Buffers<CR>
+map <leader>d :BD<CR>
 
 " DBUI
-nnoremap <leader>d :DBUIToggle<CR>
+nnoremap <C-d> :DBUIToggle<CR>
 
 " Use `[g` and `]g` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
