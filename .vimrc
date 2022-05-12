@@ -125,7 +125,7 @@ function! InstallCocPlugs(info)
 endfunction
 
 "tagbar
-Plug 'liuchengxu/vista.vim', {'on': 'Vista!!'}
+Plug 'liuchengxu/vista.vim'
 
 "Debugger
 if has('nvim')
@@ -262,6 +262,7 @@ let g:db_ui_show_database_icon = 1
 let g:vista_default_executive = 'coc'
 let g:vista_echo_cursor_strategy = 'scroll'
 let g:vista_close_on_jump = 1
+let g:vista_disable_statusline = 1
 nnoremap <leader>v :Vista!!<CR>
 
 "git blame config
@@ -300,7 +301,7 @@ endfunction
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
-" Remap <C-f> and <C-b> for scroll float windows/popups.
+" Remap <C-j> and <C-k> for scroll float windows/popups.
 if has('nvim-0.4.0') || has('patch-8.2.0750')
   nnoremap <silent><nowait><expr> <C-j> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-j>"
   nnoremap <silent><nowait><expr> <C-k> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-k>"
@@ -376,6 +377,7 @@ let g:NERDTreeIgnore              = [
   \ '.git$[[dir]]', 'target$[[dir]]', '.idea$[[dir]]',
   \ '\.iml$[[file]]', 'build$[[dir]]',
   \ ]
+let g:NERDTreeStatusline = -1
 let g:NERDTreeWinSize             = 40
 let g:NERDTreeShowHidden          = 1
 let g:NERDTreeShowLineNumbers     = 0
@@ -424,22 +426,41 @@ lua <<EOF
 EOF
 endif
 
+function! NearestMethodOrFunction() abort
+  let func = get(b:, 'vista_nearest_method_or_function', '')
+  if func != ''
+    return func
+  endif
+  return &fileencoding
+
+endfunction
+
 if has('nvim')
 lua << END
+local function vista()
+  return [[Vista]]
+end
+local function fugitive_branch()
+  local icon = '' -- e0a0
+  return icon .. ' ' .. vim.fn.FugitiveHead()
+end
+local vista = { sections = { lualine_b = { vista } }, filetypes = {'vista'} }
+local blame = { sections = { lualine_a = { fugitive_branch }, lualine_z = { 'location' } }, filetypes = {'fugitiveblame'} }
 require('lualine').setup { 
+  extensions = {'nerdtree', 'fzf', 'fugitive', vista, blame},
   sections = {
     lualine_a = {'mode'},
     lualine_b = {'branch', 'diagnostics'},
     lualine_c = {'filename'},
-    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_x = {'NearestMethodOrFunction', 'fileformat', 'filetype'},
     lualine_y = {'progress'},
     lualine_z = {'location'}
-  },
-  extensions = {'nerdtree', 'fzf'} 
+  }
   }
 require("virt-column").setup{ char = "│" }
 END
 endif
+
 augroup NERDTree
   autocmd!
   " open NERDTree if open directory
@@ -447,8 +468,9 @@ augroup NERDTree
   autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
   " close NERDTree if it's a last window
   autocmd BufEnter * nested if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-  " Open the existing NERDTree on each new tab.
-  "autocmd BufWinEnter * silent NERDTreeMirror 
+  " If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+  autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 augroup END
 
 " tag-bar config
@@ -490,7 +512,10 @@ command! BD call fzf#run(fzf#wrap({
   \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
 \ }))
 
+"Find files
 nnoremap <silent> <Leader>f :Ag <C-R><C-W><CR>
+"Fint (t)ags
+nnoremap <silent> <Leader>t :Vista finder fzf<CR>
 
 "##############################################################################"
 "################################### Utils ####################################"
@@ -516,3 +541,8 @@ function SubHeader(width, word)
 
     :put ='\"'.l:word_line.'\"'
 endfunction
+
+" TODO override syntax
+hi! default link VistaScope Keyword
+hi! default link VistaTag Function
+hi! default link VistaLineNr SpecialKey
