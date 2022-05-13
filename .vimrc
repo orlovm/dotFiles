@@ -31,6 +31,8 @@ set backspace=indent,eol,start
 set nobackup
 " History size
 set history=500 
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
 "show the cursor position
 set ruler
 "display incomplete commands
@@ -42,7 +44,8 @@ set ignorecase smartcase
 
 " Set split separator to Unicode box drawing character
 if has('nvim')
-  set fillchars=vert:│,eob:\ 
+  set fillchars=vert:▕,eob:\ 
+  set noshowmode
 endif
 
 " Override color scheme to make split the same color as tmux's default
@@ -67,7 +70,7 @@ set scrolloff=8
 "Fix Sizing Bug With Alacritty Terminal
 autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
 
-autocmd FileType go,js,vim setlocal colorcolumn=80
+autocmd FileType go,js,vim setlocal colorcolumn=81
 
 " Tabs config
 set expandtab
@@ -121,6 +124,7 @@ function! InstallCocPlugs(info)
     :CocInstall coc-spell-checker
     :CocInstall coc-cspell-dicts
     :CocInstall coc-pyright
+    :CocInstall coc-lua
   endif
 endfunction
 
@@ -250,6 +254,12 @@ nnoremap <Space> <PageDown>
 nnoremap tg :TagbarToggle<CR>
 
 autocmd FileType go nmap <leader>e :GoIfErr<CR>
+
+"Line text objects
+xnoremap il g_o^
+onoremap il :normal vil<CR>
+xnoremap al $o^
+onoremap al :normal val<CR>
 
 "##############################################################################"
 "############################## Plugins config ################################"
@@ -429,7 +439,7 @@ endif
 function! NearestMethodOrFunction() abort
   let func = get(b:, 'vista_nearest_method_or_function', '')
   if func != ''
-    return func
+    return ':'.func
   endif
   return &fileencoding
 
@@ -441,13 +451,18 @@ local function vista()
   return [[Vista]]
 end
 local function fugitive_branch()
-  local icon = '' -- e0a0
+  local icon = ''
   return icon .. ' ' .. vim.fn.FugitiveHead()
+end
+local function db()
+  local icon = ''
+  return icon .. ' DBUI'
 end
 local vista = { sections = { lualine_b = { vista } }, filetypes = {'vista'} }
 local blame = { sections = { lualine_a = { fugitive_branch }, lualine_z = { 'location' } }, filetypes = {'fugitiveblame'} }
+local db = { sections = { lualine_a = { db }}, filetypes = {'dbui'} }
 require('lualine').setup { 
-  extensions = {'nerdtree', 'fzf', 'fugitive', vista, blame},
+  extensions = {'nerdtree', 'fzf', 'fugitive', vista, blame, db},
   sections = {
     lualine_a = {'mode'},
     lualine_b = {'branch', 'diagnostics'},
@@ -457,7 +472,7 @@ require('lualine').setup {
     lualine_z = {'location'}
   }
   }
-require("virt-column").setup{ char = "│" }
+require("virt-column").setup{ char = "▏" }
 END
 endif
 
@@ -480,7 +495,8 @@ let g:tagbar_width = 50
 let g:seoul256_background = 235
 colorscheme seoul256
 let g:seoul256_srgb = 1
-"hi link CocFloating markdown
+hi StatusLine ctermfg=236
+hi StatusLineNC ctermfg=236
 
 " ctrl-p config
 let g:ctrlp_custom_ignore = {
@@ -546,3 +562,43 @@ endfunction
 hi! default link VistaScope Keyword
 hi! default link VistaTag Function
 hi! default link VistaLineNr SpecialKey
+
+
+function! SetCursorLineNrColorInsert(mode)
+    " Insert mode: blue
+    if a:mode == "i"
+        highlight StatusLine ctermfg=106
+
+    " Replace mode: red
+    elseif a:mode == "r"
+        highlight StatusLine ctermfg=1
+
+    endif
+endfunction
+
+
+function! SetCursorLineNrColorVisual()
+    set updatetime=0
+    " Visual mode: orange
+    highlight StatusLine ctermfg=9
+endfunction
+
+
+function! ResetCursorLineNrColor()
+    set updatetime=4000
+    highlight StatusLine  ctermfg=80
+endfunction
+
+
+vnoremap <silent> <expr> <SID>SetCursorLineNrColorVisual SetCursorLineNrColorVisual()
+nnoremap <silent> <script> v v<SID>SetCursorLineNrColorVisual
+nnoremap <silent> <script> V V<SID>SetCursorLineNrColorVisual
+nnoremap <silent> <script> <C-v> <C-v><SID>SetCursorLineNrColorVisual
+
+
+augroup CursorLineNrColorSwap
+    autocmd!
+    autocmd InsertEnter * call SetCursorLineNrColorInsert(v:insertmode)
+    autocmd InsertLeave * call ResetCursorLineNrColor()
+    autocmd CursorHold * call ResetCursorLineNrColor()
+augroup END
