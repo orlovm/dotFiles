@@ -53,7 +53,8 @@ autocmd ColorScheme * highlight VertSplit cterm=NONE ctermfg=233 ctermbg=NONE
 autocmd ColorScheme * highlight ColorColumn ctermbg=235
 autocmd ColorScheme * highlight VirtColumn ctermfg=234
 "use system + clipboard
-set clipboard=unnamedplus
+set clipboard+=unnamedplus
+set clipboard+=unnamed
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
 set updatetime=300
@@ -137,7 +138,6 @@ if has('nvim')
   Plug 'leoluz/nvim-dap-go'
   Plug 'rcarriga/nvim-dap-ui'
 endif
-
 Plug 'glts/vim-magnum'
 Plug 'glts/vim-radical'
 
@@ -146,6 +146,8 @@ if has('nvim')
   " If you want to have icons in your statusline choose one of these
   Plug 'kyazdani42/nvim-web-devicons'
   Plug 'lukas-reineke/virt-column.nvim'
+  Plug 'nvim-lua/plenary.nvim' " don't forget to add this one if you don't have it yet!
+  Plug 'ThePrimeagen/harpoon'
 endif
 
 " Fzf - finder
@@ -214,7 +216,7 @@ Plug 'g4s8/vim-licenser'
 " Comment lines in source files
 Plug 'tpope/vim-commentary'
 " File navigation
-Plug 'ctrlpvim/ctrlp.vim'
+"Plug 'ctrlpvim/ctrlp.vim'
 " git blame
 Plug 'zivyangll/git-blame.vim'
 " Handlebars
@@ -260,6 +262,18 @@ xnoremap il g_o^
 onoremap il :normal vil<CR>
 xnoremap al $o^
 onoremap al :normal val<CR>
+
+"Harpoon
+nnoremap <silent><leader>h :lua require("harpoon.mark").add_file()<CR>
+nnoremap <silent><C-e> :lua require("harpoon.ui").toggle_quick_menu()<CR>
+nnoremap <silent><leader>tc :lua require("harpoon.cmd-ui").toggle_quick_menu()<CR>
+
+nnoremap <silent><C-h> :lua require("harpoon.ui").nav_file(1)<CR>
+nnoremap <silent><C-l> :lua require("harpoon.ui").nav_file(2)<CR>
+nnoremap <silent><C-g> :lua require("harpoon.ui").nav_file(3)<CR>
+nnoremap <silent><C-a> :lua require("harpoon.ui").nav_file(4)<CR>
+nnoremap <silent>[h :lua require("harpoon.ui").nav_prev()<CR>
+nnoremap <silent>]h :lua require("harpoon.ui").nav_next()<CR>
 
 "##############################################################################"
 "############################## Plugins config ################################"
@@ -454,11 +468,12 @@ local function fugitive_branch()
   local icon = ''
   return icon .. ' ' .. vim.fn.FugitiveHead()
 end
+
 local function db()
   local icon = ''
   return icon .. ' DBUI'
 end
-local vista = { sections = { lualine_b = { vista } }, filetypes = {'vista'} }
+local vista = { sections = { lualine_a = { vista } }, filetypes = {'vista'} }
 local blame = { sections = { lualine_a = { fugitive_branch }, lualine_z = { 'location' } }, filetypes = {'fugitiveblame'} }
 local db = { sections = { lualine_a = { db }}, filetypes = {'dbui'} }
 require('lualine').setup { 
@@ -469,6 +484,10 @@ require('lualine').setup {
     lualine_c = {'filename'},
     lualine_x = {'NearestMethodOrFunction', 'fileformat', 'filetype'},
     lualine_y = {'progress'},
+    lualine_z = {'location'}
+  },
+  inactive_sections = {
+    lualine_b = {'filename'},
     lualine_z = {'location'}
   }
   }
@@ -529,9 +548,12 @@ command! BD call fzf#run(fzf#wrap({
 \ }))
 
 "Find files
+nnoremap <silent> <C-p> :Files<CR>
+"Ag
 nnoremap <silent> <Leader>f :Ag <C-R><C-W><CR>
-"Fint (t)ags
-nnoremap <silent> <Leader>t :Vista finder fzf<CR>
+nnoremap <silent> <Leader>g :Ag<space>
+"Find (t)ags
+nnoremap <silent> <Leader>v :Vista finder fzf<CR>
 
 "##############################################################################"
 "################################### Utils ####################################"
@@ -564,41 +586,38 @@ hi! default link VistaTag Function
 hi! default link VistaLineNr SpecialKey
 
 
-function! SetCursorLineNrColorInsert(mode)
-    " Insert mode: blue
-    if a:mode == "i"
-        highlight StatusLine ctermfg=106
-
-    " Replace mode: red
-    elseif a:mode == "r"
-        highlight StatusLine ctermfg=1
-
-    endif
-endfunction
-
-
-function! SetCursorLineNrColorVisual()
-    set updatetime=0
-    " Visual mode: orange
-    highlight StatusLine ctermfg=9
-endfunction
-
-
-function! ResetCursorLineNrColor()
-    set updatetime=4000
-    highlight StatusLine  ctermfg=80
-endfunction
-
-
-vnoremap <silent> <expr> <SID>SetCursorLineNrColorVisual SetCursorLineNrColorVisual()
-nnoremap <silent> <script> v v<SID>SetCursorLineNrColorVisual
-nnoremap <silent> <script> V V<SID>SetCursorLineNrColorVisual
-nnoremap <silent> <script> <C-v> <C-v><SID>SetCursorLineNrColorVisual
-
-
-augroup CursorLineNrColorSwap
-    autocmd!
-    autocmd InsertEnter * call SetCursorLineNrColorInsert(v:insertmode)
-    autocmd InsertLeave * call ResetCursorLineNrColor()
-    autocmd CursorHold * call ResetCursorLineNrColor()
-augroup END
+"function! SetColorInsert(mode)
+"    " Insert mode: blue
+"    if a:mode == "i"
+"        highlight StatusLine ctermfg=108
+"
+"    " Replace mode: red
+"    elseif a:mode == "r"
+"        highlight StatusLine ctermfg=168
+"
+"    endif
+"endfunction
+"
+"function! SetColorVisual()
+"    " Visual mode: orange
+"    highlight StatusLine ctermfg=181
+"endfunction
+"
+"
+"function! ResetColor()
+"    highlight StatusLine  ctermfg=109
+"endfunction
+"
+"
+"vnoremap <silent> <expr> <SID>SetColorVisual SetColorVisual()
+"nnoremap <silent> <script> v v<SID>SetColorVisual
+"nnoremap <silent> <script> V V<SID>SetColorVisual
+"nnoremap <silent> <script> <C-v> <C-v><SID>SetColorVisual
+"
+"
+"augroup CursorLineNrColorSwap
+"    autocmd!
+"    autocmd InsertEnter * call SetColorInsert(v:insertmode)
+"    autocmd InsertLeave * call ResetColor()
+"    autocmd CursorHold * call ResetColor()
+"augroup END
