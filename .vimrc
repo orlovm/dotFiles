@@ -268,10 +268,10 @@ nnoremap <silent><leader>h :lua require("harpoon.mark").add_file()<CR>
 nnoremap <silent><C-e> :lua require("harpoon.ui").toggle_quick_menu()<CR>
 nnoremap <silent><leader>tc :lua require("harpoon.cmd-ui").toggle_quick_menu()<CR>
 
-nnoremap <silent><C-h> :lua require("harpoon.ui").nav_file(1)<CR>
-nnoremap <silent><C-l> :lua require("harpoon.ui").nav_file(2)<CR>
-nnoremap <silent><C-g> :lua require("harpoon.ui").nav_file(3)<CR>
-nnoremap <silent><C-a> :lua require("harpoon.ui").nav_file(4)<CR>
+nnoremap <silent><space>h :lua require("harpoon.ui").nav_file(1)<CR>
+nnoremap <silent><space>j :lua require("harpoon.ui").nav_file(2)<CR>
+nnoremap <silent><space>k :lua require("harpoon.ui").nav_file(3)<CR>
+nnoremap <silent><space>l :lua require("harpoon.ui").nav_file(4)<CR>
 nnoremap <silent>[h :lua require("harpoon.ui").nav_prev()<CR>
 nnoremap <silent>]h :lua require("harpoon.ui").nav_next()<CR>
 
@@ -551,9 +551,13 @@ command! BD call fzf#run(fzf#wrap({
 nnoremap <silent> <C-p> :Files<CR>
 "Ag
 nnoremap <silent> <Leader>f :Ag <C-R><C-W><CR>
-nnoremap <silent> <Leader>g :Ag<space>
+function! Fzf_ag()
+  let a = input('Ag>')
+  execute ':Ag '.a
+endfunction
+nnoremap <silent> <Leader>g :call Fzf_ag()<CR>
 "Find (t)ags
-nnoremap <silent> <Leader>v :Vista finder fzf<CR>
+nnoremap <silent> <Leader>t :Vista finder fzf<CR>
 
 "##############################################################################"
 "################################### Utils ####################################"
