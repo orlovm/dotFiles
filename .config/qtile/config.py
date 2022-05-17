@@ -69,10 +69,11 @@ gray = "#181818"
 
 
 def VPNActive():
-    a = subprocess.check_output(['nmcli', "-f", "connection.id", "connection", "show", "--active", "id", "vpn"])
-    if a:
-        return True
-    else:
+    try:
+         a = subprocess.check_output(['nmcli', "-f", "connection.id", "connection", "show", "--active", "id", "vpn"])
+         if a:
+            return True
+    except:
         return False
 
 def toggle(qtile):
@@ -240,6 +241,7 @@ def initCurScreen():
                active_color=orange,
                inactive_text="",
                active_text="",
+               font="Ubuntu Nerd Font Mono",
                inactive_color=gray,
                fontsize=25,
             )
@@ -314,7 +316,7 @@ follow_mouse_focus = True
 bring_front_click = False
 cursor_warp = False
 
-floating_layout = layout.Floating(**layout_theme, 
+floating_layout = layout.Floating(border_width=0, 
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,
