@@ -24,9 +24,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
-import re
-import socket
 import subprocess
 from subprocess import check_output
 from libqtile import qtile
@@ -243,7 +240,7 @@ def initCurScreen():
                active_text="",
                font="Ubuntu Nerd Font Mono",
                inactive_color=gray,
-               fontsize=25,
+               fontsize=13,
             )
 
 screens = [

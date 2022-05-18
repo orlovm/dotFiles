@@ -11,7 +11,7 @@ scriptencoding utf-8
 set encoding=utf-8
 " Not compatible with vi
 set nocompatible
-
+set noswapfile
 " Syntax detection
 syntax on
 " Give more space for displaying messages.
@@ -141,6 +141,8 @@ endif
 Plug 'glts/vim-magnum'
 Plug 'glts/vim-radical'
 
+Plug 'mbbill/undotree'
+
 if has('nvim')
   Plug 'nvim-lualine/lualine.nvim'
   " If you want to have icons in your statusline choose one of these
@@ -215,8 +217,6 @@ Plug 'tpope/vim-scriptease'
 Plug 'g4s8/vim-licenser'
 " Comment lines in source files
 Plug 'tpope/vim-commentary'
-" File navigation
-"Plug 'ctrlpvim/ctrlp.vim'
 " git blame
 Plug 'zivyangll/git-blame.vim'
 " Handlebars
@@ -225,6 +225,7 @@ Plug 'mustache/vim-mustache-handlebars'
 Plug 'tpope/vim-surround'
 "uppercase SQL
 Plug 'jsborjesson/vim-uppercase-sql'
+Plug 'tpope/vim-repeat'
 
 Plug 'antoinemadec/coc-fzf'
 call plug#end()
@@ -251,9 +252,16 @@ inoremap <S-down> ↓
 vnoremap <S-Tab> <gv
 vnoremap <Tab> >gv
 
-nnoremap <Space> <PageDown>
+"(r)eload vimrc
+map <leader>r :so $MYVIMRC<CR>
 
-nnoremap tg :TagbarToggle<CR>
+"write
+nnoremap <leader>w :w<CR>
+
+"
+nnoremap <leader>u :UndotreeToggle<CR>
+
+nnoremap <Space> <PageDown>
 
 autocmd FileType go nmap <leader>e :GoIfErr<CR>
 
@@ -278,7 +286,10 @@ nnoremap <silent>]h :lua require("harpoon.ui").nav_next()<CR>
 "##############################################################################"
 "############################## Plugins config ################################"
 "##############################################################################"
+"sneak
+let g:sneak#label = 1
 
+"DBUI
 let g:db_ui_use_nerd_fonts = 1
 let g:db_ui_show_database_icon = 1
 
@@ -287,6 +298,7 @@ let g:vista_default_executive = 'coc'
 let g:vista_echo_cursor_strategy = 'scroll'
 let g:vista_close_on_jump = 1
 let g:vista_disable_statusline = 1
+let g:vista_keep_fzf_colors = 1
 nnoremap <leader>v :Vista!!<CR>
 
 "git blame config
@@ -507,8 +519,6 @@ augroup NERDTree
     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 augroup END
 
-" tag-bar config
-let g:tagbar_width = 50
 
 " seoul256 config
 let g:seoul256_background = 235
@@ -516,15 +526,6 @@ colorscheme seoul256
 let g:seoul256_srgb = 1
 hi StatusLine ctermfg=236
 hi StatusLineNC ctermfg=236
-
-" ctrl-p config
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](\.git|target)$',
-  \ 'file': '\v\.(so|class|o)$',
-  \ }
-
-" tagbar config
-nnoremap <F4> :TagbarToggle<CR>
 
 filetype plugin indent on  
 
@@ -589,7 +590,7 @@ hi! default link VistaScope Keyword
 hi! default link VistaTag Function
 hi! default link VistaLineNr SpecialKey
 
-
+hi! CocHighlightText ctermbg=237
 "function! SetColorInsert(mode)
 "    " Insert mode: blue
 "    if a:mode == "i"
