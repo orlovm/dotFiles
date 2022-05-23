@@ -7,8 +7,9 @@
   "diagnostic.hintSign":" ",
   "diagnostic.refreshOnInsertMode": true,
   "diagnostic.checkCurrentLine":true,
-  "diagnostic.signLevel":"warning",
+  "diagnostic.signLevel":"hint",
   "diagnostic.virtualText": true,
+  "codeLens.enable":true,
   "cSpellExt.enableDictionaries":["russian"],
   "cSpell.language": "en,ru",
   "sql.database":"mysql",
@@ -17,7 +18,7 @@
       "command": "golangci-lint-langserver",
       "filetypes": ["go"],
       "initializationOptions": {
-        "command": ["golangci-lint", "run", "--enable-all", "--disable", "lll,exhaustivestruct,varnamelen", "--out-format", "json"]
+        "command": ["golangci-lint", "run", "--enable-all", "--disable", "lll,exhaustivestruct,varnamelen,typecheck", "--out-format", "json"]
       }
     }
   },

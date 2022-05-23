@@ -25,16 +25,17 @@
 # SOFTWARE.
 
 import subprocess
-from subprocess import check_output
-from libqtile import qtile
-from libqtile.config import Click, Drag, Group, KeyChord, Key, Match, Screen, ScratchPad, DropDown
+
+from libqtile import bar, widget
 from libqtile.command import lazy
-from libqtile import layout, bar, widget, hook
-from libqtile.widget import base
-from libqtile.lazy import lazy
-from libqtile.utils import guess_terminal
-from typing import List  # noqa: F401from typing import List  # noqa: F401
+from libqtile.config import Click, Drag, DropDown, Group, Key, Match, ScratchPad, Screen
 from libqtile.dgroups import simple_key_binder
+from libqtile.dgroups import simple_key_binder
+from libqtile.layout.columns import Columns
+from libqtile.layout.floating import Floating
+from libqtile.layout.max import Max
+from libqtile.lazy import lazy
+from libqtile.widget import base
 
 mod = "mod4"
 terminal = "alacritty"
@@ -64,7 +65,6 @@ dgroups_key_binder = simple_key_binder("mod4")
 orange = "#E95420"
 gray = "#181818"
 
-
 def VPNActive():
     try:
          a = subprocess.check_output(['nmcli', "-f", "connection.id", "connection", "show", "--active", "id", "vpn"])
@@ -73,7 +73,7 @@ def VPNActive():
     except:
         return False
 
-def toggle(qtile):
+def toggle():
     if VPNActive():
         subprocess.call(['nmcli', 'con', 'down', 'id', 'vpn'])
     else:
@@ -185,7 +185,7 @@ keys = [
 # Allow MODKEY+[0 through 9] to bind to groups, see https://docs.qtile.org/en/stable/manual/config/groups.html
 # MOD4 + index Number : Switch to Group[index]
 # MOD4 + shift + index Number : Send active window to another Group
-from libqtile.dgroups import simple_key_binder
+
 dgroups_key_binder = simple_key_binder("mod4")
 
 layout_theme = {"border_width": 2,
@@ -195,9 +195,9 @@ layout_theme = {"border_width": 2,
 
 # border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=4
 layouts = [
-    layout.Columns(**layout_theme),
-    layout.Max(**layout_theme),
-    layout.Floating(**layout_theme),
+    Columns(**layout_theme),
+    Max(**layout_theme),
+    Floating(**layout_theme),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
@@ -228,6 +228,7 @@ def initGroupBox():
                   this_current_screen_border = orange,
                   this_screen_border = orange,
                   disable_drag=True,
+                  use_mouse_wheel=False,
                   fontsize=11,
                   margin_y=3,
                   padding_y=1,
@@ -261,7 +262,7 @@ screens = [
                 ),
                 widget.Memory(
                     measure_mem='G',
-                    format='{MemUsed: .0f}{mm}',
+                    format='{MemUsed: .00f}{mm}',
                     ),
                 Test(foreground=orange),
                 widget.Systray(
@@ -271,7 +272,12 @@ screens = [
                     fmt = '{}',
                     padding = 5
                     ),
-                widget.Clock(format="%Y-%m-%d %a %H:%M"),
+                widget.Clock(format="%Y-%m-%d %a %H:%M", 
+                    mouse_callbacks={
+                        'Button1': lazy.spawn('gsimplecal next_month'), 
+                        'Button3': lazy.spawn('gsimplecal prev_month'), 
+                        'Button2': lazy.spawn('killall -q gsimplecal') 
+                    }),
             ],
             18,
             background=gray,
@@ -313,10 +319,10 @@ follow_mouse_focus = True
 bring_front_click = False
 cursor_warp = False
 
-floating_layout = layout.Floating(border_width=0, 
+floating_layout = Floating(border_width=0, 
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
-        *layout.Floating.default_float_rules,
+        *Floating.default_float_rules,
         Match(wm_class="confirmreset"),  # gitk
         Match(wm_class="makebranch"),  # gitk
         Match(wm_class="maketag"),  # gitk

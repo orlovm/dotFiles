@@ -12,6 +12,9 @@ set encoding=utf-8
 " Not compatible with vi
 set nocompatible
 set noswapfile
+" Undo
+set undodir=$HOME/.vim/undo   
+set undofile
 " Syntax detection
 syntax on
 " Give more space for displaying messages.
@@ -160,7 +163,9 @@ Plug 'tpope/vim-unimpaired'
 
 "Git plugins
 Plug 'tpope/vim-fugitive'
-Plug 'rbong/vim-flog'
+Plug 'rbong/vim-flog', {'on': 'Flog'}
+Plug 'idanarye/vim-merginal', {'on': 'Merginal'}
+Plug 'zivyangll/git-blame.vim'
 " GoLang support
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
@@ -197,11 +202,6 @@ endif
 " Easy selection pairs via `viv` and `vav`
 Plug 'gorkunov/smartpairs.vim'
 
-" Dark powered asynchronous unite all interfaces for Neovim/Vim8 
-"Plug 'https://github.com/Shougo/denite.nvim'
-
-" Tag bar panel
-Plug 'majutsushi/tagbar'
 " Insert pairs [ -> []
 Plug 'jiangmiao/auto-pairs'
 " Highlight hex colors like #ff0000 with :ColorHighlight
@@ -217,8 +217,6 @@ Plug 'tpope/vim-scriptease'
 Plug 'g4s8/vim-licenser'
 " Comment lines in source files
 Plug 'tpope/vim-commentary'
-" git blame
-Plug 'zivyangll/git-blame.vim'
 " Handlebars
 Plug 'mustache/vim-mustache-handlebars'
 " parentheses, brackets, quotes, XML tags, and more
@@ -480,16 +478,20 @@ local function fugitive_branch()
   local icon = ''
   return icon .. ' ' .. vim.fn.FugitiveHead()
 end
+local function get_short_cwd()
+  return vim.fn.fnamemodify(vim.fn.getcwd(), ':~')
+end
 
 local function db()
   local icon = ''
   return icon .. ' DBUI'
 end
+local nerd = { sections = { lualine_a = { get_short_cwd } }, inactive_sections = { lualine_b = { get_short_cwd } }, filetypes = {'nerdtree'} }
 local vista = { sections = { lualine_a = { vista } }, filetypes = {'vista'} }
 local blame = { sections = { lualine_a = { fugitive_branch }, lualine_z = { 'location' } }, filetypes = {'fugitiveblame'} }
 local db = { sections = { lualine_a = { db }}, filetypes = {'dbui'} }
 require('lualine').setup { 
-  extensions = {'nerdtree', 'fzf', 'fugitive', vista, blame, db},
+  extensions = {nerd, 'fzf', 'fugitive', vista, blame, db},
   sections = {
     lualine_a = {'mode'},
     lualine_b = {'branch', 'diagnostics'},
@@ -498,10 +500,6 @@ require('lualine').setup {
     lualine_y = {'progress'},
     lualine_z = {'location'}
   },
-  inactive_sections = {
-    lualine_b = {'filename'},
-    lualine_z = {'location'}
-  }
   }
 require("virt-column").setup{ char = "▏" }
 END
