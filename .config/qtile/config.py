@@ -109,6 +109,8 @@ keys = [
     Key([mod, "control"], "l", lazy.layout.grow_right(), desc="Grow window to the right"),
     Key([mod, "control"], "j", lazy.layout.grow_down(), desc="Grow window down"),
     Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
+    Key([mod], "F10", lazy.window.toggle_floating(), desc="Grow window up"),
+    Key([mod], "F11", lazy.window.toggle_fullscreen(), desc="Grow window up"),
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
@@ -276,7 +278,7 @@ screens = [
                     mouse_callbacks={
                         'Button1': lazy.spawn('gsimplecal next_month'), 
                         'Button3': lazy.spawn('gsimplecal prev_month'), 
-                        'Button2': lazy.spawn('killall -q gsimplecal') 
+                        'Button2': lazy.spawn('pkill gsimplecal') 
                     }),
             ],
             18,
