@@ -147,6 +147,9 @@ Plug 'glts/vim-radical'
 Plug 'mbbill/undotree'
 
 if has('nvim')
+  Plug 'nvim-telescope/telescope.nvim'
+  Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
+  Plug 'fannheyward/telescope-coc.nvim'
   Plug 'nvim-lualine/lualine.nvim'
   " If you want to have icons in your statusline choose one of these
   Plug 'kyazdani42/nvim-web-devicons'
@@ -225,7 +228,7 @@ Plug 'tpope/vim-surround'
 Plug 'jsborjesson/vim-uppercase-sql'
 Plug 'tpope/vim-repeat'
 
-Plug 'antoinemadec/coc-fzf'
+"Plug 'antoinemadec/coc-fzf'
 call plug#end()
 
 
@@ -280,6 +283,8 @@ nnoremap <silent><space>k :lua require("harpoon.ui").nav_file(3)<CR>
 nnoremap <silent><space>l :lua require("harpoon.ui").nav_file(4)<CR>
 nnoremap <silent>[h :lua require("harpoon.ui").nav_prev()<CR>
 nnoremap <silent>]h :lua require("harpoon.ui").nav_next()<CR>
+
+imap kj <Esc>
 
 "##############################################################################"
 "############################## Plugins config ################################"
@@ -345,11 +350,22 @@ if has('nvim-0.4.0') || has('patch-8.2.0750')
   vnoremap <silent><nowait><expr> <C-k> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-k>"
 endif
 
+" Telescope config
+if has('nvim')
+lua <<EOF
+  require("telescope").setup {
+  }
+  require('telescope').load_extension('fzf')
+  require('telescope').load_extension('coc')
+EOF
+  command! -nargs=? Tgrep lua require 'telescope.builtin'.grep_string({ search = vim.fn.input("Grep For > ")})
+endif
+
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+nmap <silent> gr :Telescope coc references<CR>
 
 " Symbol renaming.
 nmap <space>rn <Plug>(coc-rename)
@@ -367,11 +383,11 @@ nmap <leader>qf  <Plug>(coc-fix-current)
 " Run the Code Lens action on the current line.
 nmap <leader>cl  <Plug>(coc-codelens-action)
 
-map <leader>b :Buffers<CR>
-map <leader>d :BD<CR>
+map <leader>bb :Telescope buffers<CR>
+map <leader>bd :BD<CR>
 
 " DBUI
-nnoremap <C-d> :DBUIToggle<CR>
+nnoremap <leader>d :DBUIToggle<CR>
 
 " Use `[g` and `]g` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
@@ -411,7 +427,7 @@ let g:NERDTreeIgnore              = [
   \ '.git$[[dir]]', 'target$[[dir]]', '.idea$[[dir]]',
   \ '\.iml$[[file]]', 'build$[[dir]]',
   \ ]
-let g:NERDTreeStatusline = -1
+let g:NERDTreeStatusline          = -1
 let g:NERDTreeWinSize             = 40
 let g:NERDTreeShowHidden          = 1
 let g:NERDTreeShowLineNumbers     = 0
@@ -495,7 +511,7 @@ require('lualine').setup {
   sections = {
     lualine_a = {'mode'},
     lualine_b = {'branch', 'diagnostics'},
-    lualine_c = {'filename'},
+    lualine_c = {{ 'filename', path = 1 }},
     lualine_x = {'NearestMethodOrFunction', 'fileformat', 'filetype'},
     lualine_y = {'progress'},
     lualine_z = {'location'}
@@ -547,14 +563,9 @@ command! BD call fzf#run(fzf#wrap({
 \ }))
 
 "Find files
-nnoremap <silent> <C-p> :Files<CR>
-"Ag
-nnoremap <silent> <Leader>f :Ag <C-R><C-W><CR>
-function! Fzf_ag()
-  let a = input('Ag>')
-  execute ':Ag '.a
-endfunction
-nnoremap <silent> <Leader>g :call Fzf_ag()<CR>
+nnoremap <silent> <C-p> :Telescope fd<CR>
+nnoremap <silent> <Leader>f :Telescope grep_string<CR>
+nnoremap <silent> <Leader>g :Tgrep<CR>
 "Find (t)ags
 nnoremap <silent> <Leader>t :Vista finder fzf<CR>
 
