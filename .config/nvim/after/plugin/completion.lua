@@ -1,5 +1,3 @@
-local is_wsl = vim.env.USER == "tj-wsl"
-
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
 
 -- Don't show the dumb matching stuff.
@@ -59,54 +57,20 @@ cmp.setup {
       end,
     },
 
-    -- ["<tab>"] = false,
     ["<tab>"] = cmp.config.disable,
 
-    -- ["<tab>"] = cmp.mapping {
-    --   i = cmp.config.disable,
-    --   c = function(fallback)
-    --     fallback()
-    --   end,
-    -- },
-
+    
     -- Testing
     ["<c-q>"] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
     },
 
-    -- If you want tab completion :'(
-    --  First you have to just promise to read `:help ins-completion`.
-    --
-    -- ["<Tab>"] = function(fallback)
-    --   if cmp.visible() then
-    --     cmp.select_next_item()
-    --   else
-    --     fallback()
-    --   end
-    -- end,
-    -- ["<S-Tab>"] = function(fallback)
-    --   if cmp.visible() then
-    --     cmp.select_prev_item()
-    --   else
-    --     fallback()
-    --   end
-    -- end,
   },
 
-  -- Youtube:
-  --    the order of your sources matter (by default). That gives them priority
-  --    you can configure:
-  --        keyword_length
-  --        priority
-  --        max_item_count
-  --        (more?)
   sources = {
-    { name = "gh_issues" },
-
-    -- Youtube: Could enable this only for lua, but nvim_lua handles that already.
+    -- { name = "gh_issues" },
     { name = "nvim_lua" },
-
     { name = "nvim_lsp" },
     { name = "path" },
     { name = "luasnip" },
@@ -149,7 +113,6 @@ cmp.setup {
   },
 
   formatting = {
-    -- Youtube: How to set up nice formatting for your sources.
     format = lspkind.cmp_format {
       with_text = true,
       menu = {
@@ -165,59 +128,43 @@ cmp.setup {
   },
 
   experimental = {
-    -- I like the new menu better! Nice work hrsh7th
-    native_menu = false,
-
-    -- Let's play with this for a day or two
     ghost_text = false,
   },
 }
 
--- cmp.setup.cmdline("/", {
---   completion = {
---     -- Might allow this later, but I don't like it right now really.
---     -- Although, perhaps if it just triggers w/ @ then we could.
---     --
---     -- I will have to come back to this.
---     autocomplete = false,
---   },
---   sources = cmp.config.sources({
---     { name = "nvim_lsp_document_symbol" },
---   }, {
---     -- { name = "buffer", keyword_length = 5 },
---   }),
--- })
+ --cmp.setup.cmdline("/", {
+ --  completion = {
+ --    -- Might allow this later, but I don't like it right now really.
+ --    -- Although, perhaps if it just triggers w/ @ then we could.
+ --    --
+ --    -- I will have to come back to this.
+ --    autocomplete = false,
+ --  },
+ --  sources = cmp.config.sources({
+ --    { name = "nvim_lsp_document_symbol" },
+ --  }, {
+ --    -- { name = "buffer", keyword_length = 5 },
+ --  }),
+ --})
 
--- cmp.setup.cmdline(":", {
---   completion = {
---     autocomplete = false,
---   },
---
---   sources = cmp.config.sources({
---     {
---       name = "path",
---     },
---   }, {
---     {
---       name = "cmdline",
---       max_item_count = 20,
---       keyword_length = 4,
---     },
---   }),
--- })
+ --cmp.setup.cmdline(":", {
+ --  completion = {
+ --    autocomplete = false,
+ --  },
 
---[[
-" Setup buffer configuration (nvim-lua source only enables in Lua filetype).
-"
-" ON YOUTUBE I SAID: This only _adds_ sources for a filetype, not removes the global ones.
-"
-" BUT I WAS WRONG! This will override the global setup. Sorry for any confusion.
-autocmd FileType lua lua require'cmp'.setup.buffer {
-\   sources = {
-\     { name = 'nvim_lua' },
-\     { name = 'buffer' },
-\   },
-\ }
+ --  sources = cmp.config.sources({
+ --    {
+ --      name = "path",
+ --    },
+ --  }, {
+ --    {
+ --      name = "cmdline",
+ --      max_item_count = 20,
+ --      keyword_length = 4,
+ --    },
+ --  }),
+ --})
+
 --]]
 
 -- Add vim-dadbod-completion in sql files
@@ -235,18 +182,12 @@ _ = vim.cmd [[
   augroup END
 ]]
 
---[[
-" Disable cmp for a buffer
-autocmd FileType TelescopePrompt lua require('cmp').setup.buffer { enabled = false }
---]]
-
 -- Youtube: customizing appearance
 --
 -- nvim-cmp highlight groups.
 -- local Group = require("colorbuddy.group").Group
 -- local g = require("colorbuddy.group").groups
 -- local s = require("colorbuddy.style").styles
-
 -- Group.new("CmpItemAbbr", g.Comment)
 -- Group.new("CmpItemAbbrDeprecated", g.Error)
 -- Group.new("CmpItemAbbrMatchFuzzy", g.CmpItemAbbr.fg:dark(), nil, s.italic)

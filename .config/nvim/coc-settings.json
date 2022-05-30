@@ -1,5 +1,4 @@
 {
-  "cSpell.diagnosticLevel":"Hint",
   "diagnostic.messageTarget": "echo",
   "diagnostic.level":"hint",
   "diagnostic.errorSign":" ",
@@ -10,9 +9,6 @@
   "diagnostic.signLevel":"hint",
   "diagnostic.virtualText": true,
   "codeLens.enable":true,
-  "cSpellExt.enableDictionaries":["russian"],
-  "cSpell.language": "en,ru",
-  "sql.database":"mysql",
   "languageserver": {
     "golangci-lint-languageserver": {
       "command": "golangci-lint-langserver",
