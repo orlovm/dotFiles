@@ -46,7 +46,7 @@ set showcmd
 set incsearch
 " smart search case
 set ignorecase smartcase
-set signcolumn=yes
+" set signcolumn=yes
 " Set split separator to Unicode box drawing character
 if has('nvim')
   set fillchars=vert:▕,eob:\ 
@@ -54,9 +54,11 @@ if has('nvim')
 endif
 
 " Override color scheme to make split the same color as tmux's default
-"autocmd ColorScheme * highlight VertSplit cterm=NONE ctermfg=NONE ctermbg=NONE
+" autocmd ColorScheme * highlight VertSplit cterm=NONE ctermfg=NONE ctermbg=NONE
 autocmd ColorScheme * highlight ColorColumn ctermbg=NONE
 autocmd ColorScheme * highlight signcolumn ctermbg=NONE
+" autocmd ColorScheme * set pumblend=15
+" autocmd ColorScheme * set winblend=15
 " autocmd ColorScheme * highlight VirtColumn ctermfg=234
 "use system + clipboard
 set clipboard+=unnamedplus
@@ -116,10 +118,9 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
 Plug 'fannheyward/telescope-coc.nvim'
 Plug 'nvim-lualine/lualine.nvim'
-" If you want to have icons in your statusline choose one of these
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'lukas-reineke/virt-column.nvim'
-Plug 'nvim-lua/plenary.nvim' " don't forget to add this one if you don't have it yet!
+Plug 'nvim-lua/plenary.nvim'
 Plug 'ThePrimeagen/harpoon'
 
 Plug 'tpope/vim-unimpaired'
@@ -130,7 +131,7 @@ Plug 'rbong/vim-flog', {'on': 'Flog'}
 Plug 'idanarye/vim-merginal', {'on': 'Merginal'}
 Plug 'zivyangll/git-blame.vim'
 " GoLang support
-"Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 " Some vim defaults
 Plug 'tpope/vim-sensible'
@@ -152,6 +153,7 @@ Plug 'junegunn/seoul256.vim'
 Plug 'luisiacc/gruvbox-baby'
 Plug 'sainnhe/sonokai'
 Plug 'gruvbox-community/gruvbox'
+Plug 'sainnhe/gruvbox-material'
 
 
 " SplitJoin
@@ -172,13 +174,15 @@ Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/cmp-nvim-lua'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/nvim-cmp'
- Plug 'tzachar/cmp-tabnine', { 'do': './install.sh' }
+Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
+"' Plug 'tzachar/cmp-tabnine', { 'do': './install.sh' }
 Plug 'onsails/lspkind-nvim'
 Plug 'nvim-lua/lsp_extensions.nvim'
 Plug 'simrat39/symbols-outline.nvim'
 Plug 'tjdevries/colorbuddy.nvim'
 " Neovim Tree shitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'nvim-treesitter/playground'
 " Snippets
 Plug 'L3MON4D3/LuaSnip'
@@ -216,6 +220,9 @@ call plug#end()
 "##############################################################################"
 "################################## Mappings ##################################"
 "##############################################################################"
+
+", is closer...
+let mapleader = ","
 
 " DAP
 nnoremap <silent> <F5> :lua require'dap'.continue()<CR>
@@ -332,20 +339,9 @@ let g:NERDTreeShowHidden          = 1
 let g:NERDTreeShowLineNumbers     = 0
 let g:NERDTreeMinimalUI           = 1
 
-function! NearestMethodOrFunction() abort
-  let func = get(b:, 'vista_nearest_method_or_function', '')
-  if func != ''
-    return ':'.func
-  endif
-  return &fileencoding
-
-endfunction
-
-if has('nvim')
 lua << END
 require("virt-column").setup{ char = "▏" }
 END
-endif
 
 augroup NERDTree
   autocmd!
@@ -361,8 +357,8 @@ augroup END
 
 
 " seoul256 config
-let g:seoul256_background = 235
-colorscheme gruvbox
+" let g:seoul256_background = 235
+colorscheme gruvbox-material
 let g:seoul256_srgb = 1
 " hi StatusLine ctermfg=236
 " hi StatusLineNC ctermfg=236
@@ -374,7 +370,7 @@ nnoremap <silent> <C-p> :Telescope fd<CR>
 nnoremap <silent> <Leader>f :Telescope grep_string<CR>
 nnoremap <silent> <Leader>g :Tgrep<CR>
 "Find (t)ags
-nnoremap <silent> <Leader>t :Vista finder fzf<CR>
+nnoremap <silent> <Leader>t :Telescope lsp_document_symbols<CR>
 
 
 if has('nvim')

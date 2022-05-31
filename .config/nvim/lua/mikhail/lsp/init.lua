@@ -28,31 +28,26 @@ local on_attach = function(client, bufnr)
   -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 
-  -- Highlight same ids
---    if client.resolved_capabilities.document_highlight then
---      vim.cmd [[
---        hi! LspReferenceRead cterm=bold ctermbg=yellow guibg=LightYellow
---        hi! LspReferenceText cterm=bold ctermbg=yellow guibg=LightYellow
---        hi! LspReferenceWrite cterm=bold ctermbg=yellow guibg=LightYellow
---      ]]
---      vim.api.nvim_create_augroup('lsp_document_highlight', {
---        clear = false
---      })
---      vim.api.nvim_clear_autocmds({
---        buffer = bufnr,
---        group = 'lsp_document_highlight',
---      })
---      vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
---        group = 'lsp_document_highlight',
---        buffer = bufnr,
---        callback = vim.lsp.buf.document_highlight,
---      })
---      vim.api.nvim_create_autocmd('CursorMoved', {
---        group = 'lsp_document_highlight',
---        buffer = bufnr,
---        callback = vim.lsp.buf.clear_references,
---      })
---    end
+-- Highlight same ids
+    if client.resolved_capabilities.document_highlight then
+      vim.api.nvim_create_augroup('lsp_document_highlight', {
+        clear = false
+      })
+      vim.api.nvim_clear_autocmds({
+        buffer = bufnr,
+        group = 'lsp_document_highlight',
+      })
+      vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+        group = 'lsp_document_highlight',
+        buffer = bufnr,
+        callback = vim.lsp.buf.document_highlight,
+      })
+      vim.api.nvim_create_autocmd('CursorMoved', {
+        group = 'lsp_document_highlight',
+        buffer = bufnr,
+        callback = vim.lsp.buf.clear_references,
+      })
+    end
 end
 
   -- Setup nvim-cmp.
@@ -60,7 +55,7 @@ end
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-local servers = { 'gopls', 'pyright', 'tsserver', }
+local servers = { 'gopls', 'pyright', 'tsserver', 'vimls', 'vuels', }
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {
     on_attach = on_attach,
@@ -72,3 +67,8 @@ for _, lsp in pairs(servers) do
   }
 
 end
+
+require'lspconfig'.golangci_lint_ls.setup{
+  on_attach=on_attach,
+  command = { "golangci-lint", "run", "--enable-all", "--disable", "lll,exhaustivestruct,varnamelen,typecheck", "--out-format", "json" };
+}

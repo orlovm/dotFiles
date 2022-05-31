@@ -11,11 +11,10 @@ local function db()
   return icon .. ' DBUI'
 end
 local nerd = { sections = { lualine_a = { get_short_cwd } }, inactive_sections = { lualine_b = { get_short_cwd } }, filetypes = {'nerdtree'} }
-local vista = { sections = { lualine_a = { vista } }, filetypes = {'vista'} }
 local blame = { sections = { lualine_a = { fugitive_branch }, lualine_z = { 'location' } }, filetypes = {'fugitiveblame'} }
 local db = { sections = { lualine_a = { db }}, filetypes = {'dbui'} }
 require('lualine').setup { 
-  extensions = {nerd, 'fzf', 'fugitive', vista, blame, db},
+  extensions = {nerd, 'fzf', 'fugitive', blame, db},
   sections = {
     lualine_a = {'mode'},
     lualine_b = {'branch', 'diagnostics'},
