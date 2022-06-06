@@ -5,6 +5,8 @@ require'nvim-treesitter.configs'.setup {
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
 
+  ident = true,
+
   -- List of parsers to ignore installing (for "all")
   -- ignore_install = { "javascript" },
 
@@ -36,82 +38,51 @@ require'nvim-treesitter.configs'.setup {
   },
 
   textobjects = {
-    -- syntax-aware textobjects
-    enable = enable,
-    lsp_interop = {
-      enable = enable,
-      peek_definition_code = {
-        ["DF"] = "@function.outer",
-        ["DF"] = "@class.outer"
-      }
-    },
-    keymaps = {
-      ["iL"] = {
-        -- you can define your own textobjects directly here
-        go = "(function_definition) @function",
-      },
-      -- or you use the queries from supported languages with textobjects.scm
-      ["af"] = "@function.outer",
-      ["if"] = "@function.inner",
-      ["aC"] = "@class.outer",
-      ["iC"] = "@class.inner",
-      ["ac"] = "@conditional.outer",
-      ["ic"] = "@conditional.inner",
-      ["ae"] = "@block.outer",
-      ["ie"] = "@block.inner",
-      ["al"] = "@loop.outer",
-      ["il"] = "@loop.inner",
-      ["is"] = "@statement.inner",
-      ["as"] = "@statement.outer",
-      ["ad"] = "@comment.outer",
-      ["am"] = "@call.outer",
-      ["im"] = "@call.inner"
-    },
     move = {
-      enable = enable,
-      set_jumps = true, -- whether to set jumps in the jumplist
+      enable = true,
+      set_jumps = true,
+  
       goto_next_start = {
+        -- ["]p"] = "@parameter.inner",
         ["]m"] = "@function.outer",
-        ["]]"] = "@class.outer"
+        ["]]"] = "@class.outer",
       },
       goto_next_end = {
         ["]M"] = "@function.outer",
-        ["]["] = "@class.outer"
+        ["]["] = "@class.outer",
       },
       goto_previous_start = {
+        -- ["[p"] = "@parameter.inner",
         ["[m"] = "@function.outer",
-        ["[["] = "@class.outer"
+        ["[["] = "@class.outer",
       },
       goto_previous_end = {
         ["[M"] = "@function.outer",
-        ["[]"] = "@class.outer"
-      }
+        ["[]"] = "@class.outer",
+      },
     },
     select = {
-      enable = enable,
+      enable = true,
+
+      -- Automatically jump forward to textobj, similar to targets.vim
+      lookahead = true,
+
       keymaps = {
         -- You can use the capture groups defined in textobjects.scm
         ["af"] = "@function.outer",
         ["if"] = "@function.inner",
         ["ac"] = "@class.outer",
         ["ic"] = "@class.inner",
-        -- Or you can define your own textobjects like this
-        ["iF"] = {
-          python = "(function_definition) @function",
-          cpp = "(function_definition) @function",
-          c = "(function_definition) @function",
-          java = "(method_declaration) @function",
-          go = "(method_declaration) @function"
-        }
-      }
+      },
     },
     swap = {
-      enable = enable,
+      enable = true,
       swap_next = {
-        ["<leader>a"] = "@parameter.inner"
+        ["<leader>a"] = "@parameter.inner",
       },
       swap_previous = {
-        ["<leader>A"] = "@parameter.inner"
-      }
-    }
-  }}
+        ["<leader>A"] = "@parameter.inner",
+      },
+    },
+  },
+}

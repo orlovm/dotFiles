@@ -4,101 +4,20 @@
 
 
 "################################ Vim settings ################################"
-"no beep
-set visualbell
-"Unicode
-scriptencoding utf-8
-set encoding=utf-8
-" Not compatible with vi
-set nocompatible
-set noswapfile
-" Undo
-set undodir=$HOME/.vim/undo   
-set undofile
-" Syntax detection
-syntax on
-" Give more space for displaying messages.
-"set cmdheight=2
-" Highlight search
-set hlsearch
-" Completion
-set completeopt=menu,menuone,noselect
-" Menu config
-set wildmode=longest,list,full
-" set wildmode=
-" Backspace behaviour
-" indent  allow backspacing over autoindent
-" eol     allow backspacing over line breaks (join lines)
-" start   allow backspacing over the start of insert; CTRL-W and CTRL-U
-"         stop once at the start of insert.
-set backspace=indent,eol,start
-" No backup files
-set nobackup
-" History size
-set history=500 
-" Don't pass messages to |ins-completion-menu|.
-set shortmess+=c
-"show the cursor position
-set ruler
-"display incomplete commands
-set showcmd
-" Show matched pattern when typing search command
-set incsearch
-" smart search case
-set ignorecase smartcase
-" set signcolumn=yes
-" Set split separator to Unicode box drawing character
-if has('nvim')
-  set fillchars=vert:▕,eob:\ 
-  set noshowmode
-endif
 
-" Override color scheme to make split the same color as tmux's default
-" autocmd ColorScheme * highlight VertSplit cterm=NONE ctermfg=NONE ctermbg=NONE
+", is closer...
+let mapleader = ","
+
 autocmd ColorScheme * highlight ColorColumn ctermbg=NONE
 autocmd ColorScheme * highlight signcolumn ctermbg=NONE
-" autocmd ColorScheme * set pumblend=15
-" autocmd ColorScheme * set winblend=15
-" autocmd ColorScheme * highlight VirtColumn ctermfg=234
-"use system + clipboard
-set clipboard+=unnamedplus
-set clipboard+=unnamed
-" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
-" delays and poor user experience.
-set updatetime=300
 
-" Mouse config
-if has('mouse')
-  set mouse=a
-endif
-
-" Scrolling config
-set scrolljump=8
-set scrolloff=8
 
 "Fix Sizing Bug With Alacritty Terminal
 autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
 
 autocmd FileType go,js,vim setlocal colorcolumn=81
 
-" Tabs config
-set expandtab
-set shiftwidth=2
-set smarttab
 
-" Use external .vimrc in current folder root
-set exrc
-" Forbid buffer writing, shell commands
-" and autocmd from local dir .vimrc files
-set secure
-
-set nu nornu
-" show line numbers
-augroup numbertoggle
-  autocmd!
-  autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu && mode() != "i" | set rnu   | endif
-  autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu                  | set nornu | endif
-augroup END
 
 
 "##############################################################################"
@@ -131,7 +50,7 @@ Plug 'rbong/vim-flog', {'on': 'Flog'}
 Plug 'idanarye/vim-merginal', {'on': 'Merginal'}
 Plug 'zivyangll/git-blame.vim'
 " GoLang support
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'ray-x/go.nvim'
 
 " Some vim defaults
 Plug 'tpope/vim-sensible'
@@ -190,6 +109,7 @@ Plug 'rafamadriz/friendly-snippets'
 " Easy selection pairs via `viv` and `vav`
 Plug 'gorkunov/smartpairs.vim'
 
+Plug 'stevearc/dressing.nvim'
 " Insert pairs [ -> []
 Plug 'jiangmiao/auto-pairs'
 " Highlight hex colors like #ff0000 with :ColorHighlight
@@ -221,8 +141,6 @@ call plug#end()
 "################################## Mappings ##################################"
 "##############################################################################"
 
-", is closer...
-let mapleader = ","
 
 " DAP
 nnoremap <silent> <F5> :lua require'dap'.continue()<CR>
@@ -237,16 +155,6 @@ nnoremap <silent> <leader>dl :lua require'dap'.run_last()<CR>
 
 "Mapping tab character to Shift+Tab
 inoremap <S-Tab> <C-V><Tab>
-
-" Arrows
-nnoremap <left> b
-nnoremap <right> e
-nnoremap <up> <PageUp>
-nnoremap <down> <PageDown>
-inoremap <S-left> ←
-inoremap <S-right> →
-inoremap <S-up> ↑
-inoremap <S-down> ↓
 
 "TAB = indent, Shift+TAB = dedent
 vnoremap <S-Tab> <gv
@@ -298,20 +206,11 @@ let g:db_ui_show_database_icon = 1
 "git blame config
 nnoremap gb :<C-u>call gitblame#echo()<CR>
 
-" Telescope config
-if has('nvim')
-lua <<EOF
-  require("telescope").setup {
-  }
-  require("telescope").load_extension("git_worktree")
-EOF
-  command! -nargs=? Tgrep lua require 'telescope.builtin'.grep_string({ search = vim.fn.input("Grep For > ")})
-endif
+command! -nargs=? Tgrep lua require 'telescope.builtin'.grep_string({ search = vim.fn.input("Grep For > ")})
 
 nmap <silent> gr :Telescope lsp_references<CR>
 
 map <leader>bb :Telescope buffers<CR>
-map <leader>bd :BD<CR>
 
 " DBUI
 nnoremap <leader>d :DBUIToggle<CR>
@@ -351,8 +250,9 @@ augroup NERDTree
   " close NERDTree if it's a last window
   autocmd BufEnter * nested if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
   " If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
-  autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+  autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 2 |
     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+  autocmd DirChanged * NERDTreeCWD
 augroup END
 
 
@@ -372,10 +272,12 @@ nnoremap <silent> <Leader>g :Tgrep<CR>
 "Find (t)ags
 nnoremap <silent> <Leader>t :Telescope lsp_document_symbols<CR>
 
-
 if has('nvim')
 lua << END
   require 'mikhail.lsp'
-  -- require('gitsigns').setup()
+  require('go').setup()
+  -- Run gofmt + goimport on save
+  vim.api.nvim_exec([[ autocmd BufWritePre *.go :silent! lua require('go.format').goimport() ]], false)
+-- require('gitsigns').setup()
 END
 endif
