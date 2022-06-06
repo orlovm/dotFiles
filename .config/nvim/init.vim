@@ -93,6 +93,8 @@ Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/cmp-nvim-lua'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-path'
+Plug 'tamago324/cmp-zsh'
 Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
 "' Plug 'tzachar/cmp-tabnine', { 'do': './install.sh' }
 Plug 'onsails/lspkind-nvim'
@@ -170,8 +172,6 @@ nnoremap <leader>w :w<CR>
 nnoremap <leader>u :UndotreeToggle<CR>
 
 nnoremap <Space> <PageDown>
-
-autocmd FileType go nmap <leader>e :GoIfErr<CR>
 
 "Line text objects
 xnoremap il g_o^

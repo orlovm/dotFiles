@@ -56,7 +56,7 @@ groups = [
           Group("MUS", layout='monadtall'),
           Group("VID", layout='monadtall'),
           Group("GFX", layout='floating')]
-
+            
 # Allow MODKEY+[0 through 9] to bind to groups, see https://docs.qtile.org/en/stable/manual/config/groups.html
 # MOD4 + index Number : Switch to Group[index]
 # MOD4 + shift + index Number : Send active window to another Group
@@ -73,7 +73,7 @@ def VPNActive():
     except:
         return False
 
-def toggle():
+def toggle(qtile):
     if VPNActive():
         subprocess.call(['nmcli', 'con', 'down', 'id', 'vpn'])
     else:
