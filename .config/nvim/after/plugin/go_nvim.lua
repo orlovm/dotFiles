@@ -25,3 +25,6 @@ require("go").setup {
   lsp_on_attach = false, -- if a on_attach function provided:  attach on_attach function to gopls
   gopls_cmd = nil, -- if you need to specify gopls path and cmd, e.g {"/home/user/lsp/gopls", "-logfile", "/var/log/gopls.log" }
 }
+
+-- Run gofmt + goimport on save
+vim.api.nvim_exec([[ autocmd BufWritePre *.go :silent! lua require('go.format').goimport() ]], false)

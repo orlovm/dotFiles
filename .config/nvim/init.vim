@@ -255,6 +255,13 @@ augroup NERDTree
   autocmd DirChanged * NERDTreeCWD
 augroup END
 
+augroup coloroverrides
+" autocmd Colorscheme * highlight clear SignColumn
+" autocmd Colorscheme * highlight GitSignsAdd ctermbg=NONE ctermfg=green
+" autocmd Colorscheme * highlight GitSignsChange ctermbg=NONE
+" autocmd Colorscheme * highlight GitSignsDelete ctermbg=NONE
+" autocmd Colorscheme * highlight GitSignsChange ctermbg=NONE
+augroup END
 
 " seoul256 config
 " let g:seoul256_background = 235
@@ -271,13 +278,16 @@ nnoremap <silent> <Leader>f :Telescope grep_string<CR>
 nnoremap <silent> <Leader>g :Tgrep<CR>
 "Find (t)ags
 nnoremap <silent> <Leader>t :Telescope lsp_document_symbols<CR>
-
+nnoremap <CR> :noh<CR><CR>
 if has('nvim')
 lua << END
   require 'mikhail.lsp'
-  require('go').setup()
-  -- Run gofmt + goimport on save
-  vim.api.nvim_exec([[ autocmd BufWritePre *.go :silent! lua require('go.format').goimport() ]], false)
--- require('gitsigns').setup()
 END
 endif
+
+exec 'hi GitSignsAdd ctermbg=NONE' .
+            \' ctermfg=' . synIDattr(synIDtrans(hlID('GreenSign')), 'fg', 'cterm')
+exec 'hi GitSignsDelete ctermbg=NONE' .
+            \' ctermfg=' . synIDattr(synIDtrans(hlID('RedSign')), 'fg', 'cterm')
+exec 'hi GitSignsChange ctermbg=NONE' .
+            \' ctermfg=' . synIDattr(synIDtrans(hlID('BlueSign')), 'fg', 'cterm')
