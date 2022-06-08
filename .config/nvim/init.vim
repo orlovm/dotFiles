@@ -16,7 +16,7 @@ autocmd ColorScheme * highlight signcolumn ctermbg=NONE
 autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
 
 autocmd FileType go,js,vim setlocal colorcolumn=81
-
+" set termguicolors
 
 
 
@@ -211,6 +211,7 @@ command! -nargs=? Tgrep lua require 'telescope.builtin'.grep_string({ search = v
 nmap <silent> gr :Telescope lsp_references<CR>
 
 map <leader>bb :Telescope buffers<CR>
+map <leader>gb :Telescope git_branches<CR>
 
 " DBUI
 nnoremap <leader>d :DBUIToggle<CR>
@@ -265,6 +266,9 @@ augroup END
 
 " seoul256 config
 " let g:seoul256_background = 235
+" let g:gruvbox_material_background = 'hard'
+" let g:gruvbox_material_foreground = 'mix'
+let g:gruvbox_material_sign_column_background = 'none'
 colorscheme gruvbox-material
 let g:seoul256_srgb = 1
 " hi StatusLine ctermfg=236
@@ -279,11 +283,11 @@ nnoremap <silent> <Leader>g :Tgrep<CR>
 "Find (t)ags
 nnoremap <silent> <Leader>t :Telescope lsp_document_symbols<CR>
 nnoremap <CR> :noh<CR><CR>
-if has('nvim')
+
 lua << END
   require 'mikhail.lsp'
 END
-endif
+
 
 exec 'hi GitSignsAdd ctermbg=NONE' .
             \' ctermfg=' . synIDattr(synIDtrans(hlID('GreenSign')), 'fg', 'cterm')

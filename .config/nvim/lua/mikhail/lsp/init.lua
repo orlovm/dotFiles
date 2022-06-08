@@ -101,7 +101,8 @@ require 'lspconfig'.golangci_lint_ls.setup {
 }
 
 
-vim.api.nvim_set_keymap('n', '<leader>tw', [[<cmd>lua require('telescope').extensions.git_worktree.git_worktrees()<CR>]]
+vim.api.nvim_set_keymap('n', '<leader>gw', [[<cmd>lua require('telescope').extensions.git_worktree.git_worktrees()<CR>]]
   , opts)
-vim.api.nvim_set_keymap('n', '<leader>tc',
+vim.api.nvim_set_keymap('n', '<leader>gc',
   [[<cmd>lua require('telescope').extensions.git_worktree.create_git_worktree()<CR>]], opts)
+
