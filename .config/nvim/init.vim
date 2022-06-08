@@ -16,7 +16,7 @@ autocmd ColorScheme * highlight signcolumn ctermbg=NONE
 autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
 
 autocmd FileType go,js,vim setlocal colorcolumn=81
-" set termguicolors
+set termguicolors
 
 
 
