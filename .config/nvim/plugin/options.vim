@@ -71,6 +71,8 @@ set nu nornu
 set scrolljump=8
 set scrolloff=8
 
+set pumblend=10
+set winblend=10
 
 augroup numbertoggle
   autocmd!

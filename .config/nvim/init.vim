@@ -8,8 +8,8 @@
 ", is closer...
 let mapleader = ","
 
-autocmd ColorScheme * highlight ColorColumn ctermbg=NONE
-autocmd ColorScheme * highlight signcolumn ctermbg=NONE
+autocmd ColorScheme * highlight ColorColumn ctermbg=NONE guibg=NONE
+" autocmd ColorScheme * highlight signcolumn ctermbg=NONE
 
 
 "Fix Sizing Bug With Alacritty Terminal
@@ -35,7 +35,6 @@ Plug 'mbbill/undotree'
 
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
-Plug 'fannheyward/telescope-coc.nvim'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'lukas-reineke/virt-column.nvim'
@@ -206,7 +205,8 @@ let g:db_ui_show_database_icon = 1
 "git blame config
 nnoremap gb :<C-u>call gitblame#echo()<CR>
 
-command! -nargs=? Tgrep lua require 'telescope.builtin'.grep_string({ search = vim.fn.input("Grep For > ")})
+" command! -nargs=? Tgrep lua require 'telescope.builtin'.grep_string({ search = vim.fn.input("Grep For > ")})
+command! -nargs=? Tgrep lua vim.ui.input( { prompt =  "Grep For > ", kind = "grep" }, function(input) require 'telescope.builtin'.grep_string({ search = input }) end)
 
 nmap <silent> gr :Telescope lsp_references<CR>
 
@@ -256,19 +256,13 @@ augroup NERDTree
   autocmd DirChanged * NERDTreeCWD
 augroup END
 
-augroup coloroverrides
-" autocmd Colorscheme * highlight clear SignColumn
-" autocmd Colorscheme * highlight GitSignsAdd ctermbg=NONE ctermfg=green
-" autocmd Colorscheme * highlight GitSignsChange ctermbg=NONE
-" autocmd Colorscheme * highlight GitSignsDelete ctermbg=NONE
-" autocmd Colorscheme * highlight GitSignsChange ctermbg=NONE
-augroup END
 
 " seoul256 config
 " let g:seoul256_background = 235
 " let g:gruvbox_material_background = 'hard'
-" let g:gruvbox_material_foreground = 'mix'
+let g:gruvbox_material_foreground = 'original'
 let g:gruvbox_material_sign_column_background = 'none'
+" let g:gruvbox_material_disable_italic_comment = 1
 colorscheme gruvbox-material
 let g:seoul256_srgb = 1
 " hi StatusLine ctermfg=236
@@ -279,7 +273,7 @@ filetype plugin indent on
 "Find files
 nnoremap <silent> <C-p> :Telescope fd<CR>
 nnoremap <silent> <Leader>f :Telescope grep_string<CR>
-nnoremap <silent> <Leader>g :Tgrep<CR>
+nnoremap <silent> <Leader>gg :Tgrep<CR>
 "Find (t)ags
 nnoremap <silent> <Leader>t :Telescope lsp_document_symbols<CR>
 nnoremap <CR> :noh<CR><CR>
@@ -288,10 +282,12 @@ lua << END
   require 'mikhail.lsp'
 END
 
-
-exec 'hi GitSignsAdd ctermbg=NONE' .
-            \' ctermfg=' . synIDattr(synIDtrans(hlID('GreenSign')), 'fg', 'cterm')
-exec 'hi GitSignsDelete ctermbg=NONE' .
-            \' ctermfg=' . synIDattr(synIDtrans(hlID('RedSign')), 'fg', 'cterm')
-exec 'hi GitSignsChange ctermbg=NONE' .
-            \' ctermfg=' . synIDattr(synIDtrans(hlID('BlueSign')), 'fg', 'cterm')
+" exec 'hi GitSignsAdd ctermbg=NONE' .
+"             \' ctermfg=' . synIDattr(synIDtrans(hlID('GreenSign')), 'fg', 'cterm')
+"             \' guifg=' . synIDattr(synIDtrans(hlID('GreenSign')), 'fg', 'gui')
+" exec 'hi GitSignsDelete ctermbg=NONE' .
+"             \' ctermfg=' . synIDattr(synIDtrans(hlID('RedSign')), 'fg', 'cterm')
+"             \' guifg=' . synIDattr(synIDtrans(hlID('RedSign')), 'fg', 'gui')
+" exec 'hi GitSignsChange ctermbg=NONE' .
+"             \' ctermfg=' . synIDattr(synIDtrans(hlID('BlueSign')), 'fg', 'cterm')
+"             \' guifg=' . synIDattr(synIDtrans(hlID('BlueSign')), 'fg', 'gui')
