@@ -205,14 +205,6 @@ let g:db_ui_show_database_icon = 1
 "git blame config
 nnoremap gb :<C-u>call gitblame#echo()<CR>
 
-" command! -nargs=? Tgrep lua require 'telescope.builtin'.grep_string({ search = vim.fn.input("Grep For > ")})
-command! -nargs=? Tgrep lua vim.ui.input( { prompt =  "Grep For > ", kind = "grep" }, function(input) require 'telescope.builtin'.grep_string({ search = input }) end)
-
-nmap <silent> gr :Telescope lsp_references<CR>
-
-map <leader>bb :Telescope buffers<CR>
-map <leader>gb :Telescope git_branches<CR>
-
 " DBUI
 nnoremap <leader>d :DBUIToggle<CR>
 
@@ -224,7 +216,6 @@ let g:sqlfmt_options = "-r -k upper"
 
 " nerd-tree config
 nnoremap <C-n> :NERDTreeToggle<CR>
-
 let g:NERDTreeAutoCenter          = 1
 let g:NERDTreeAutoCenterThreshold = 8
 let g:NERDTreeChDirMode           = 2
@@ -238,10 +229,6 @@ let g:NERDTreeWinSize             = 40
 let g:NERDTreeShowHidden          = 1
 let g:NERDTreeShowLineNumbers     = 0
 let g:NERDTreeMinimalUI           = 1
-
-lua << END
-require("virt-column").setup{ char = "▏" }
-END
 
 augroup NERDTree
   autocmd!
@@ -270,24 +257,8 @@ let g:seoul256_srgb = 1
 
 filetype plugin indent on  
 
-"Find files
-nnoremap <silent> <C-p> :Telescope fd<CR>
-nnoremap <silent> <Leader>f :Telescope grep_string<CR>
-nnoremap <silent> <Leader>gg :Tgrep<CR>
-"Find (t)ags
-nnoremap <silent> <Leader>t :Telescope lsp_document_symbols<CR>
 nnoremap <CR> :noh<CR><CR>
 
 lua << END
   require 'mikhail.lsp'
 END
-
-" exec 'hi GitSignsAdd ctermbg=NONE' .
-"             \' ctermfg=' . synIDattr(synIDtrans(hlID('GreenSign')), 'fg', 'cterm')
-"             \' guifg=' . synIDattr(synIDtrans(hlID('GreenSign')), 'fg', 'gui')
-" exec 'hi GitSignsDelete ctermbg=NONE' .
-"             \' ctermfg=' . synIDattr(synIDtrans(hlID('RedSign')), 'fg', 'cterm')
-"             \' guifg=' . synIDattr(synIDtrans(hlID('RedSign')), 'fg', 'gui')
-" exec 'hi GitSignsChange ctermbg=NONE' .
-"             \' ctermfg=' . synIDattr(synIDtrans(hlID('BlueSign')), 'fg', 'cterm')
-"             \' guifg=' . synIDattr(synIDtrans(hlID('BlueSign')), 'fg', 'gui')
