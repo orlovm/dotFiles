@@ -4,7 +4,6 @@
 
 
 "################################ Vim settings ################################"
-
 ", is closer...
 let mapleader = ","
 
@@ -25,6 +24,9 @@ set termguicolors
 "##############################################################################"
 
 call plug#begin('~/.nvim/plugged')
+Plug 'edolphin-ydf/goimpl.nvim'
+Plug 'rcarriga/nvim-notify'
+Plug 'nvim-lua/popup.nvim'
 
 "Debugger
 Plug 'mfussenegger/nvim-dap'

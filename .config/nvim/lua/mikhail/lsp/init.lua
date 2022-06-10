@@ -96,9 +96,11 @@ require 'lspconfig'.golangci_lint_ls.setup {
   on_attach = on_attach,
   cmd = {'golangci-lint-langserver', '--nolintername'},
   init_options = {
-    command = { "golangci-lint", "run", "--enable-all", "--disable", "lll,exhaustivestruct,typecheck", "--out-format", "json" },
+    command = { "golangci-lint", "run", "--enable-all", "--disable", "lll,exhaustivestruct,typecheck,wrapcheck", "--out-format", "json" },
   },
 }
+
+require'lspconfig'.eslint.setup{}
 
 require 'lspconfig'.gopls.setup {
     on_attach = on_attach,
