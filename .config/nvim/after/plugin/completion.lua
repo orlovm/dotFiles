@@ -28,6 +28,7 @@ lspkind.init()
 local cmp = require "cmp"
 
 cmp.setup {
+  preselect = cmp.PreselectMode.None,
   mapping = {
     ["<C-n>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
     ["<C-p>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
@@ -59,13 +60,11 @@ cmp.setup {
 
     ["<tab>"] = cmp.config.disable,
 
-    
     -- Testing
     ["<c-q>"] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
     },
-
   },
 
   sources = {
@@ -74,10 +73,27 @@ cmp.setup {
     { name = "luasnip" },
     { name = "nvim_lsp" },
     { name = "path" },
-    { name = "buffer" },
+    { name = 'buffer', option = { keyword_length = 3 }},
     { name = 'nvim_lsp_signature_help' },
   },
 
+  cmp.setup.filetype({ 'mysql', 'sql' }, {
+    sources = cmp.config.sources({
+      { name = 'vim-dadbod-completion' },
+    }, {
+      { name = 'buffer', option = { keyword_length = 2 }},
+    }),
+    formatting = {
+      format = function(entry, vim_item)
+        if (entry.source.name == 'buffer') then
+          vim_item.menu = "[buf]"
+          return vim_item
+        end
+          vim_item.menu = "[DB]"
+        return vim_item
+      end
+    },
+  }),
   -- sorting = {
   --   -- TODO: Would be cool to add stuff like "See variable names before method names" in rust, or something like that.
   --   comparators = {
@@ -169,12 +185,12 @@ cmp.setup {
 --]]
 
 -- Add vim-dadbod-completion in sql files
-_ = vim.cmd [[
-  augroup DadbodSql
-    au!
-    autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer { sources = { { name = 'vim-dadbod-completion' } } }
-  augroup END
-]]
+-- _ = vim.cmd [[
+--   augroup DadbodSql
+--     au!
+--     autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer { sources = { { name = 'vim-dadbod-completion' } } }
+--   augroup END
+-- ]]
 
 _ = vim.cmd [[
   augroup CmpZsh

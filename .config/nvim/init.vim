@@ -1,5 +1,5 @@
 "##############################################################################"
-"######################### github.com/OrlovM's vimrc ##########################"
+"######################### github.com/OrlovM's init.vim #######################"
 "##############################################################################"
 
 
@@ -7,17 +7,11 @@
 ", is closer...
 let mapleader = ","
 
-autocmd ColorScheme * highlight ColorColumn ctermbg=NONE guibg=NONE
-" autocmd ColorScheme * highlight signcolumn ctermbg=NONE
-
-
 "Fix Sizing Bug With Alacritty Terminal
 autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
 
 autocmd FileType go,js,vim setlocal colorcolumn=81
 set termguicolors
-
-
 
 "##############################################################################"
 "################################## Plugins ###################################"
@@ -41,6 +35,7 @@ Plug 'nvim-lualine/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'lukas-reineke/virt-column.nvim'
 Plug 'nvim-lua/plenary.nvim'
+Plug 'MunifTanjim/nui.nvim'
 Plug 'ThePrimeagen/harpoon'
 
 Plug 'tpope/vim-unimpaired'
@@ -80,7 +75,7 @@ Plug 'sainnhe/gruvbox-material'
 Plug 'AndrewRadev/splitjoin.vim'
 
 " Navigation
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'nvim-neo-tree/neo-tree.nvim'
 " Git status for files in NERDTree
 Plug 'Xuyuanp/nerdtree-git-plugin'
 "auto update buffer
@@ -90,6 +85,8 @@ Plug 'https://github.com/chrisbra/vim-autoread.git'
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-cmdline'
+Plug 'williamboman/nvim-lsp-installer'
+Plug 'b0o/schemastore.nvim'
 
 Plug 'hrsh7th/cmp-nvim-lua'
 Plug 'hrsh7th/cmp-buffer'
@@ -119,7 +116,6 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'chrisbra/color_highlight'
 Plug 'mkitt/tabline.vim'
 " Show additiona/deletions/modifications 
-"Plug 'airblade/vim-gitgutter'
 Plug 'lewis6991/gitsigns.nvim'
 " sneak
 Plug 'justinmk/vim-sneak'
@@ -210,52 +206,18 @@ nnoremap gb :<C-u>call gitblame#echo()<CR>
 " DBUI
 nnoremap <leader>d :DBUIToggle<CR>
 
+nnoremap <C-n> :NeoTreeRevealToggle<CR>
+
 "SQL formatter config
 let g:sqlfmt_command = "sqlformat"
 let g:sqlfmt_options = "-r -k upper"
 "let g:sqlfmt_auto = 0
 
-
-" nerd-tree config
-nnoremap <C-n> :NERDTreeToggle<CR>
-let g:NERDTreeAutoCenter          = 1
-let g:NERDTreeAutoCenterThreshold = 8
-let g:NERDTreeChDirMode           = 2
-let g:NERDTreeHighlightCursorline = 1
-let g:NERDTreeIgnore              = [
-  \ '.git$[[dir]]', 'target$[[dir]]', '.idea$[[dir]]',
-  \ '\.iml$[[file]]', 'build$[[dir]]',
-  \ ]
-let g:NERDTreeStatusline          = -1
-let g:NERDTreeWinSize             = 40
-let g:NERDTreeShowHidden          = 1
-let g:NERDTreeShowLineNumbers     = 0
-let g:NERDTreeMinimalUI           = 1
-
-augroup NERDTree
-  autocmd!
-  " open NERDTree if open directory
-  autocmd StdinReadPre * let s:std_in=1
-  autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
-  " close NERDTree if it's a last window
-  autocmd BufEnter * nested if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-  " If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
-  autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 2 |
-    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
-  autocmd DirChanged * NERDTreeCWD
-augroup END
-
-
-" seoul256 config
-" let g:seoul256_background = 235
 " let g:gruvbox_material_background = 'hard'
 let g:gruvbox_material_foreground = 'original'
 let g:gruvbox_material_sign_column_background = 'none'
 " let g:gruvbox_material_disable_italic_comment = 1
 colorscheme gruvbox-material
-let g:seoul256_srgb = 1
-" hi StatusLine ctermfg=236
-" hi StatusLineNC ctermfg=236
 
 filetype plugin indent on  
 
@@ -264,3 +226,12 @@ nnoremap <CR> :noh<CR><CR>
 lua << END
   require 'mikhail.lsp'
 END
+
+ " autocmd CursorHold,CursorHoldI * lua require('code_action').code_action_listener1()
+ 
+highlight! link NeoTreeDirectoryIcon NvimTreeFolderIcon
+highlight! link NeoTreeDirectoryName NvimTreeFolderName
+highlight! link NeoTreeSymbolicLinkTarget NvimTreeSymlink
+highlight! link NeoTreeRootName NvimTreeRootFolder
+highlight! link NeoTreeDirectoryName NvimTreeOpenedFolderName
+highlight! link NeoTreeFileNameOpened NvimTreeOpenedFile

@@ -1,3 +1,4 @@
+require("nvim-lsp-installer").setup {}
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap = true, silent = true }
@@ -55,18 +56,28 @@ end
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-local servers = { 'pyright', 'tsserver', 'vimls', 'vuels', }
+local servers = { 'pyright', 'tsserver', 'vimls', 'vuels', 'bashls', 'marksman', 'yamlls', 'dockerls' }
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {
     on_attach = on_attach,
-    flags = {
-      -- This will be the default in neovim 0.7+
-      debounce_text_changes = 150,
-    },
+    -- flags = {
+    --   -- This will be the default in neovim 0.7+
+    --   debounce_text_changes = 150,
+    -- },
     capabilities = capabilities
   }
 
 end
+
+require('lspconfig').jsonls.setup {
+  on_attach = on_attach,
+  settings = {
+    json = {
+      schemas = require('schemastore').json.schemas(),
+      validate = { enable = true },
+    },
+  },
+}
 
 require 'lspconfig'.sumneko_lua.setup {
   on_attach = on_attach,
@@ -112,4 +123,6 @@ vim.api.nvim_set_keymap('n', '<leader>gw', [[<cmd>lua require('telescope').exten
   , opts)
 vim.api.nvim_set_keymap('n', '<leader>gc',
   [[<cmd>lua require('telescope').extensions.git_worktree.create_git_worktree()<CR>]], opts)
+
+
 

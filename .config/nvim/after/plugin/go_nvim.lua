@@ -1,3 +1,7 @@
+if not pcall(require, "go") then
+  return
+end
+
 require("go").setup {
   verbose = false, -- output loginf in messages
 
