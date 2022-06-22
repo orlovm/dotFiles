@@ -63,21 +63,15 @@ Plug 'kristijanhusak/vim-dadbod-completion'
 
 " Color scheme
 Plug 'junegunn/seoul256.vim'
-
-"test
 Plug 'luisiacc/gruvbox-baby'
-Plug 'sainnhe/sonokai'
 Plug 'gruvbox-community/gruvbox'
 Plug 'sainnhe/gruvbox-material'
-
 
 " SplitJoin
 Plug 'AndrewRadev/splitjoin.vim'
 
 " Navigation
 Plug 'nvim-neo-tree/neo-tree.nvim'
-" Git status for files in NERDTree
-Plug 'Xuyuanp/nerdtree-git-plugin'
 "auto update buffer
 Plug 'https://github.com/chrisbra/vim-autoread.git' 
 
@@ -94,18 +88,20 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-path'
 Plug 'tamago324/cmp-zsh'
 Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
-"' Plug 'tzachar/cmp-tabnine', { 'do': './install.sh' }
 Plug 'onsails/lspkind-nvim'
 Plug 'nvim-lua/lsp_extensions.nvim'
 Plug 'simrat39/symbols-outline.nvim'
 Plug 'tjdevries/colorbuddy.nvim'
+
 " Neovim Tree shitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'nvim-treesitter/playground'
+
 " Snippets
 Plug 'L3MON4D3/LuaSnip'
 Plug 'rafamadriz/friendly-snippets'
+
 " Easy selection pairs via `viv` and `vav`
 Plug 'gorkunov/smartpairs.vim'
 
@@ -221,7 +217,7 @@ colorscheme gruvbox-material
 
 filetype plugin indent on  
 
-nnoremap <CR> :noh<CR><CR>
+nnoremap <silent> <CR> :noh<CR><CR>
 
 lua << END
   require 'mikhail.lsp'

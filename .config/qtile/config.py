@@ -42,10 +42,11 @@ terminal = "alacritty"
 
 groups = [
          ScratchPad("scratchpad", [
-              # define a drop down terminal.
-              # it is placed in the upper third of screen by default.
               DropDown("term", "alacritty --config-file /home/mikhail/.alacritty_quake.yml",
                        opacity=1,),
+              DropDown("htop", "alacritty --config-file /home/mikhail/.alacritty_quake.yml -e htop",
+                       opacity=1,
+                       height = 0.6),
               ]),
           Group("DEV", layout='columns'),
           Group("WWW", layout='monadtall'),
@@ -128,6 +129,7 @@ keys = [
     Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod], "t", lazy.group['scratchpad'].dropdown_toggle('term')),
+    Key([mod], "h", lazy.group['scratchpad'].dropdown_toggle('htop')),
     # Volume control
     Key(
         [], "XF86AudioRaiseVolume",
@@ -180,7 +182,15 @@ keys = [
         ),
     Key([mod], "v",
         lazy.function(toggle),
-        desc='Take screenshots via dmenu'
+        desc='Toggle open vpn'
+        ),
+    Key([], "Print",
+        lazy.spawn("maim | xclip -selection clipboard -t image/png"),
+        desc='prntscr'
+        ),
+    Key([mod], "u",
+        subprocess.call(['maim', '|', 'xclip' '-selection' 'clipboard' '-t' 'image/png']),
+        desc='prntscr'
         ),
 ]
 

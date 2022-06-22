@@ -1,3 +1,5 @@
+require("git-worktree").setup()
+
 local Worktree = require("git-worktree")
 
 -- op = Operations.Switch, Operations.Create, Operations.Delete
@@ -15,5 +17,7 @@ local Worktree = require("git-worktree")
 Worktree.on_tree_change(function(op, metadata)
   if op == Worktree.Operations.Switch then
     vim.notify("Switched from " .. metadata.prev_path .. " to " .. metadata.path)
+    -- vim.cmd('BufferCloseAllButCurrent')
+    -- vim.cmd('e')
   end
 end)
