@@ -164,8 +164,6 @@ nnoremap <leader>w :w<CR>
 "
 nnoremap <leader>u :UndotreeToggle<CR>
 
-nnoremap <Space> <PageDown>
-
 "Line text objects
 xnoremap il g_o^
 onoremap il :normal vil<CR>
@@ -221,6 +219,7 @@ nnoremap <silent> <CR> :noh<CR><CR>
 
 lua << END
   require 'mikhail.lsp'
+  vim.api.nvim_set_keymap('n', '<leader>im', [[<cmd>lua require'telescope'.extensions.goimpl.goimpl{}<CR>]], {noremap=true, silent=true})
 END
 
  " autocmd CursorHold,CursorHoldI * lua require('code_action').code_action_listener1()

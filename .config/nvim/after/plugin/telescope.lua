@@ -3,7 +3,7 @@ require("telescope").setup {
 require("telescope").load_extension("git_worktree")
 require("telescope").load_extension("harpoon")
 require('telescope').load_extension('fzf')
-require'telescope'.load_extension'goimpl'
+require('telescope').load_extension'goimpl'
 local opts = { noremap = true, silent = true }
 
 -- Grep string from ui input
