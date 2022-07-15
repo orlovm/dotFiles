@@ -156,13 +156,13 @@ vnoremap <S-Tab> <gv
 vnoremap <Tab> >gv
 
 "(r)eload vimrc
-map <leader>r :so $MYVIMRC<CR>
+map <silent> <leader>r :so $MYVIMRC<CR>
 
 "write
-nnoremap <leader>w :w<CR>
+nnoremap <silent> <leader>w :w<CR>
 
 "
-nnoremap <leader>u :UndotreeToggle<CR>
+nnoremap <silent> <leader>u :UndotreeToggle<CR>
 
 "Line text objects
 xnoremap il g_o^
@@ -195,12 +195,12 @@ let g:db_ui_use_nerd_fonts = 1
 let g:db_ui_show_database_icon = 1
 
 "git blame config
-nnoremap gb :<C-u>call gitblame#echo()<CR>
+nnoremap <silent> gb :<C-u>call gitblame#echo()<CR>
 
 " DBUI
-nnoremap <leader>d :DBUIToggle<CR>
+nnoremap <silent> <leader>d :DBUIToggle<CR>
 
-nnoremap <C-n> :NeoTreeRevealToggle<CR>
+nnoremap <silent> <C-n> :NeoTreeRevealToggle<CR>
 
 "SQL formatter config
 let g:sqlfmt_command = "sqlformat"

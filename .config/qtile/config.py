@@ -129,7 +129,7 @@ keys = [
     Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod], "t", lazy.group['scratchpad'].dropdown_toggle('term')),
-    Key([mod], "h", lazy.group['scratchpad'].dropdown_toggle('htop')),
+    Key([mod], "i", lazy.group['scratchpad'].dropdown_toggle('htop')),
     # Volume control
     Key(
         [], "XF86AudioRaiseVolume",
@@ -176,22 +176,22 @@ keys = [
         lazy.spawn("dm-confedit"), 
         desc='Choose a config file to edit'
         ),
-    Key([mod], "i",
-        lazy.spawn("dm-maim"),
-        desc='Take screenshots via dmenu'
-        ),
-    Key([mod], "v",
-        lazy.function(toggle),
-        desc='Toggle open vpn'
-        ),
-    Key([], "Print",
-        lazy.spawn("maim | xclip -selection clipboard -t image/png"),
-        desc='prntscr'
-        ),
-    Key([mod], "u",
-        subprocess.call(['maim', '|', 'xclip' '-selection' 'clipboard' '-t' 'image/png']),
-        desc='prntscr'
-        ),
+    # Key([mod], "i",
+    #     lazy.spawn("dm-maim"),
+    #     desc='Take screenshots via dmenu'
+    #     ),
+    # Key([mod], "v",
+    #     lazy.function(toggle),
+    #     desc='Toggle open vpn'
+    #     ),
+    # Key([], "Print",
+    #     lazy.spawn("maim | xclip -selection clipboard -t image/png"),
+    #     desc='prntscr'
+    #     ),
+    # Key([mod], "u",
+    #     subprocess.call(['maim', '|', 'xclip' '-selection' 'clipboard' '-t' 'image/png']),
+    #     desc='prntscr'
+    #     ),
 ]
 
 # Allow MODKEY+[0 through 9] to bind to groups, see https://docs.qtile.org/en/stable/manual/config/groups.html
@@ -225,7 +225,7 @@ layouts = [
 
 widget_defaults = dict(
     font="sans",
-    fontsize=12,
+    fontsize=24,
     padding=3,
 )
 extension_defaults = widget_defaults.copy()
@@ -241,20 +241,10 @@ def initGroupBox():
                   this_screen_border = orange,
                   disable_drag=True,
                   use_mouse_wheel=False,
-                  fontsize=11,
+                  fontsize=18,
                   margin_y=3,
                   padding_y=1,
                )
-
-def initCurScreen():
-     return   widget.CurrentScreen(
-               active_color=orange,
-               inactive_text="",
-               active_text="",
-               font="Ubuntu Nerd Font Mono",
-               inactive_color=gray,
-               fontsize=13,
-            )
 
 screens = [
     Screen(
@@ -262,7 +252,6 @@ screens = [
             [
                 widget.CurrentLayout(),
                 initGroupBox(),
-                initCurScreen(),
                 widget.WindowName(
                     ),
                 widget.Notify(),
@@ -277,6 +266,7 @@ screens = [
                     format='{MemUsed: .00f}{mm}',
                     ),
                 Test(foreground=orange),
+                widget.Volume(),
                 widget.Systray(
                     icon_size = 15,
                     ),
@@ -284,6 +274,7 @@ screens = [
                     fmt = '{}',
                     padding = 5
                     ),
+                widget.Battery(),
                 widget.Clock(format="%Y-%m-%d %a %H:%M", 
                     mouse_callbacks={
                         'Button1': lazy.spawn('gsimplecal next_month'), 
@@ -291,10 +282,10 @@ screens = [
                         'Button2': lazy.spawn('pkill gsimplecal') 
                     }),
             ],
-            18,
+            28,
             background=gray,
         ),
-        wallpaper='~/wp.jpg',
+    wallpaper='~/wp.png',
         wallpaper_mode='stretch',
     ),
     Screen(
@@ -302,7 +293,6 @@ screens = [
             [
                 widget.CurrentLayout(),
                 initGroupBox(),
-                initCurScreen(),
                 widget.WindowName(),
                 widget.Chord(
                     chords_colors={

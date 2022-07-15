@@ -1,4 +1,11 @@
 require("telescope").setup {
+  defaults = {
+    layout_config = {
+      width = 0.9
+      -- other layout configuration here
+    },
+    -- other defaults configuration here
+  },
 }
 require("telescope").load_extension("git_worktree")
 require("telescope").load_extension("harpoon")
