@@ -106,8 +106,8 @@ export MANPAGER=~/.local/bin/batman.sh
 alias config='/usr/bin/git --git-dir=/home/mikhail/.cfg/ --work-tree=/home/mikhail'
 
 source ~/.zsh_profile
-source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 alias rr='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash'
 bindkey -v
 alias vim="nvim"
