@@ -21,7 +21,6 @@ call plug#begin('~/.nvim/plugged')
 Plug 'edolphin-ydf/goimpl.nvim'
 Plug 'rcarriga/nvim-notify'
 Plug 'nvim-lua/popup.nvim'
-
 "Debugger
 Plug 'mfussenegger/nvim-dap'
 Plug 'leoluz/nvim-dap-go'
@@ -62,9 +61,6 @@ Plug 'kristijanhusak/vim-dadbod-ui', {'on': 'DBUIToggle'}
 Plug 'kristijanhusak/vim-dadbod-completion'
 
 " Color scheme
-Plug 'junegunn/seoul256.vim'
-Plug 'luisiacc/gruvbox-baby'
-Plug 'gruvbox-community/gruvbox'
 Plug 'sainnhe/gruvbox-material'
 
 " SplitJoin
@@ -91,7 +87,6 @@ Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
 Plug 'onsails/lspkind-nvim'
 Plug 'nvim-lua/lsp_extensions.nvim'
 Plug 'simrat39/symbols-outline.nvim'
-Plug 'tjdevries/colorbuddy.nvim'
 
 " Neovim Tree shitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -129,6 +124,10 @@ Plug 'tpope/vim-surround'
 Plug 'jsborjesson/vim-uppercase-sql'
 Plug 'tpope/vim-repeat'
 Plug 'ThePrimeagen/git-worktree.nvim'
+
+" backticks textobj
+Plug 'https://github.com/kana/vim-textobj-user'
+Plug 'https://github.com/fvictorio/vim-textobj-backticks'
 call plug#end()
 
 
@@ -183,6 +182,19 @@ nnoremap <silent>[h :lua require("harpoon.ui").nav_prev()<CR>
 nnoremap <silent>]h :lua require("harpoon.ui").nav_next()<CR>
 
 imap kj <Esc>
+
+" greatest remap ever
+xnoremap("<leader>p", "\"_dP")
+
+" next greatest remap ever : asbjornHaland
+nnoremap("<leader>y", "\"+y")
+vnoremap("<leader>y", "\"+y")
+nmap("<leader>Y", "\"+Y")
+
+nnoremap("<leader>d", "\"_d")
+vnoremap("<leader>d", "\"_d")
+
+vnoremap("<leader>d", "\"_d")
 
 "##############################################################################"
 "############################## Plugins config ################################"

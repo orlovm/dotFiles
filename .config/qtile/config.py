@@ -36,6 +36,7 @@ from libqtile.layout.floating import Floating
 from libqtile.layout.max import Max
 from libqtile.lazy import lazy
 from libqtile.widget import base
+from libqtile import hook
 
 mod = "mod4"
 terminal = "alacritty"
@@ -50,11 +51,11 @@ groups = [
               ]),
           Group("DEV", layout='columns'),
           Group("WWW", layout='monadtall'),
-          Group("SYS", layout='monadtall'),
+          Group("DISC", layout='monadtall'),
           Group("OTH", layout='monadtall'),
           Group("CHAT", layout='monadtall'),
+          Group("SYS", layout='monadtall'),
           Group("DOC", layout='monadtall'),
-          Group("MUS", layout='monadtall'),
           Group("VID", layout='monadtall'),
           Group("GFX", layout='floating')]
             
@@ -133,22 +134,22 @@ keys = [
     # Volume control
     Key(
         [], "XF86AudioRaiseVolume",
-        lazy.spawn("amixer -c 0 -q set Master 2dB+")
+        lazy.spawn("pulsemixer --change-volume +2")
     ),
     Key(
         [], "XF86AudioLowerVolume",
-        lazy.spawn("amixer -c 0 -q set Master 2dB-")
+        lazy.spawn("pulsemixer --change-volume -2")
     ),
     Key(
         [], "XF86AudioMute",
-        lazy.spawn("amixer -c 0 -q set Master toggle")
+        lazy.spawn("pulsemixer --toggle-mute")
     ),
     Key([mod], "r",
         lazy.spawn("dmenu_run -p 'Run: '"),
         desc='Run Launcher'
         ),
     Key([mod], "b",
-        lazy.spawn("google-chrome"),
+        lazy.spawn("google-chrome-stable"),
         desc='Run browser'
         ),
     Key([mod], "c",
@@ -176,22 +177,22 @@ keys = [
         lazy.spawn("dm-confedit"), 
         desc='Choose a config file to edit'
         ),
-    # Key([mod], "i",
-    #     lazy.spawn("dm-maim"),
-    #     desc='Take screenshots via dmenu'
-    #     ),
-    # Key([mod], "v",
-    #     lazy.function(toggle),
-    #     desc='Toggle open vpn'
-    #     ),
-    # Key([], "Print",
-    #     lazy.spawn("maim | xclip -selection clipboard -t image/png"),
-    #     desc='prntscr'
-    #     ),
-    # Key([mod], "u",
-    #     subprocess.call(['maim', '|', 'xclip' '-selection' 'clipboard' '-t' 'image/png']),
-    #     desc='prntscr'
-    #     ),
+    Key([mod], "p",
+        lazy.spawn("dm-maim"),
+        desc='Take screenshots via dmenu'
+        ),
+    Key([mod], "v",
+        lazy.function(toggle),
+        desc='Toggle open vpn'
+        ),
+    Key([], "Print",
+        lazy.spawn("maim | xclip -selection clipboard -t image/png"),
+        desc='prntscr'
+        ),
+    Key([mod], "u",
+        subprocess.call(['maim', '|', 'xclip' '-selection' 'clipboard' '-t' 'image/png']),
+        desc='prntscr'
+        ),
 ]
 
 # Allow MODKEY+[0 through 9] to bind to groups, see https://docs.qtile.org/en/stable/manual/config/groups.html
@@ -254,7 +255,6 @@ screens = [
                 initGroupBox(),
                 widget.WindowName(
                     ),
-                widget.Notify(),
                 widget.Chord(
                     chords_colors={
                         "launch": ("#ff0000", "#ff00ff"),
@@ -270,10 +270,10 @@ screens = [
                 widget.Systray(
                     icon_size = 15,
                     ),
-                widget.KeyboardLayout(
-                    fmt = '{}',
-                    padding = 5
-                    ),
+                # widget.KeyboardLayout(
+                #     fmt = '{}',
+                #     padding = 5
+                #     ),
                 widget.Battery(),
                 widget.Clock(format="%Y-%m-%d %a %H:%M", 
                     mouse_callbacks={
@@ -285,7 +285,7 @@ screens = [
             28,
             background=gray,
         ),
-    wallpaper='~/wp.png',
+    wallpaper='~/wp.jpg',
         wallpaper_mode='stretch',
     ),
     Screen(

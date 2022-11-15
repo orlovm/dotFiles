@@ -1,5 +1,6 @@
 require("telescope").setup {
   defaults = {
+    file_ignore_patterns = {"vendor"},
     layout_config = {
       width = 0.9
       -- other layout configuration here
