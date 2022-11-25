@@ -61,7 +61,7 @@ Plug 'kristijanhusak/vim-dadbod-ui', {'on': 'DBUIToggle'}
 Plug 'kristijanhusak/vim-dadbod-completion'
 
 " Color scheme
-Plug 'sainnhe/gruvbox-material'
+Plug 'sainnhe/gruvbox-material', { 'commit': '66f66f64788f66c8101aa35344dd005143356b6b' }
 
 " SplitJoin
 Plug 'AndrewRadev/splitjoin.vim'
@@ -96,6 +96,7 @@ Plug 'nvim-treesitter/playground'
 " Snippets
 Plug 'L3MON4D3/LuaSnip'
 Plug 'rafamadriz/friendly-snippets'
+Plug 'saadparwaiz1/cmp_luasnip'
 
 " Easy selection pairs via `viv` and `vav`
 Plug 'gorkunov/smartpairs.vim'
@@ -128,6 +129,8 @@ Plug 'ThePrimeagen/git-worktree.nvim'
 " backticks textobj
 Plug 'https://github.com/kana/vim-textobj-user'
 Plug 'https://github.com/fvictorio/vim-textobj-backticks'
+
+Plug 'rest-nvim/rest.nvim'
 call plug#end()
 
 
@@ -168,6 +171,11 @@ xnoremap il g_o^
 onoremap il :normal vil<CR>
 xnoremap al $o^
 onoremap al :normal val<CR>
+
+"Rest
+nnoremap <leader>rr <Plug>RestNvim
+nnoremap <leader>rp <Plug>RestNvimPreview
+nnoremap <leader>rl <Plug>RestNvimLast
 
 "Harpoon
 nnoremap <silent><leader>h :lua require("harpoon.mark").add_file()<CR>

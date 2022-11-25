@@ -55,7 +55,7 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
--- local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local servers = { 'pyright', 'tsserver', 'vimls', 'vuels', 'bashls', 'marksman', 'yamlls', 'dockerls' }
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {
@@ -117,6 +117,14 @@ require 'lspconfig'.gopls.setup {
     on_attach = on_attach,
     capabilities = capabilities,
     cmd = {'gopls', '--remote=auto'},
+    settings = {
+            gopls = {
+                    analyses = {
+                            unusedparams = true,
+                    },
+                    staticcheck = true,
+            },
+    },
 }
 
 vim.api.nvim_set_keymap('n', '<leader>gw', [[<cmd>lua require('telescope').extensions.git_worktree.git_worktrees()<CR>]]
@@ -124,5 +132,4 @@ vim.api.nvim_set_keymap('n', '<leader>gw', [[<cmd>lua require('telescope').exten
 vim.api.nvim_set_keymap('n', '<leader>gc',
   [[<cmd>lua require('telescope').extensions.git_worktree.create_git_worktree()<CR>]], opts)
 
-
-
+require("luasnip.loaders.from_vscode").lazy_load()

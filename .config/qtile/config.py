@@ -38,6 +38,8 @@ from libqtile.lazy import lazy
 from libqtile.widget import base
 from libqtile import hook
 
+# TODO
+# XXX
 mod = "mod4"
 terminal = "alacritty"
 

@@ -28,6 +28,11 @@ lspkind.init()
 local cmp = require "cmp"
 
 cmp.setup {
+  snippet = {
+          expand = function(args)
+                  require("luasnip").lsp_expand(args.body)
+          end,
+  },
   preselect = cmp.PreselectMode.None,
   mapping = {
     ["<C-n>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
@@ -123,11 +128,6 @@ cmp.setup {
   -- },
 
   -- Youtube: mention that you need a separate snippets plugin
-  snippet = {
-    expand = function(args)
-      require("luasnip").lsp_expand(args.body)
-    end,
-  },
 
   formatting = {
     format = lspkind.cmp_format {
