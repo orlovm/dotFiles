@@ -18,6 +18,9 @@ set termguicolors
 "##############################################################################"
 
 call plug#begin('~/.nvim/plugged')
+Plug 'jbyuki/venn.nvim'
+Plug 'shortcuts/no-neck-pain.nvim'
+Plug 'ThePrimeagen/vim-be-good'
 Plug 'edolphin-ydf/goimpl.nvim'
 Plug 'rcarriga/nvim-notify'
 Plug 'nvim-lua/popup.nvim'
@@ -189,20 +192,34 @@ nnoremap <silent><space>l :lua require("harpoon.ui").nav_file(4)<CR>
 nnoremap <silent>[h :lua require("harpoon.ui").nav_prev()<CR>
 nnoremap <silent>]h :lua require("harpoon.ui").nav_next()<CR>
 
+"luasnip
+" press <Tab> to expand or jump in a snippet. These can also be mapped separately
+" via <Plug>luasnip-expand-snippet and <Plug>luasnip-jump-next.
+imap <silent><expr> <Tab> luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<Tab>' 
+" -1 for jumping backwards.
+inoremap <silent> <S-Tab> <cmd>lua require'luasnip'.jump(-1)<Cr>
+
+snoremap <silent> <Tab> <cmd>lua require('luasnip').jump(1)<Cr>
+snoremap <silent> <S-Tab> <cmd>lua require('luasnip').jump(-1)<Cr>
+
+" For changing choices in choiceNodes (not strictly necessary for a basic setup).
+imap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'
+smap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'
+
 imap kj <Esc>
 
-" greatest remap ever
-xnoremap("<leader>p", "\"_dP")
+" " greatest remap ever
+" xnoremap <leader>p \_dP
 
-" next greatest remap ever : asbjornHaland
-nnoremap("<leader>y", "\"+y")
-vnoremap("<leader>y", "\"+y")
-nmap("<leader>Y", "\"+Y")
+" " next greatest remap ever : asbjornHaland
+" nnoremap<leader>y \+y
+" vnoremap<leader>y \+y
+" nmap <leader>Y \+Y
 
-nnoremap("<leader>d", "\"_d")
-vnoremap("<leader>d", "\"_d")
+" nnoremap("<leader>d", "\"_d")
+" vnoremap("<leader>d", "\"_d")
 
-vnoremap("<leader>d", "\"_d")
+" vnoremap("<leader>d", "\"_d")
 
 "##############################################################################"
 "############################## Plugins config ################################"

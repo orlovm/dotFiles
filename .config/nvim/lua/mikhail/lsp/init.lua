@@ -1,7 +1,7 @@
 require("nvim-lsp-installer").setup {}
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
-local opts = { noremap = true, silent = true }
+local opts = { buffer = bufnr, noremap = true, silent = true }
 vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
 vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
 vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
@@ -30,7 +30,7 @@ local on_attach = function(client, bufnr)
   -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
   -- Highlight same ids
-  if client.server_capabilities.documentHighlightProvider  then
+  if client.server_capabilities.documentHighlightProvider then
     vim.api.nvim_create_augroup('lsp_document_highlight', {
       clear = false
     })
@@ -103,29 +103,31 @@ require 'lspconfig'.sumneko_lua.setup {
   },
 }
 
-require 'lspconfig'.golangci_lint_ls.setup {
+require 'lspconfig'.gopls.setup {
   on_attach = on_attach,
-  cmd = {'golangci-lint-langserver', '--nolintername'},
-  init_options = {
-    command = { "golangci-lint", "run", "--enable-all", "--disable", "tagliatelle,varnamelen,lll,exhaustruct,exhaustivestruct,typecheck,wrapcheck,godox", "--out-format", "json" },
+  capabilities = capabilities,
+  cmd = { 'gopls', '--remote=auto' },
+  settings = {
+    gopls = {
+      analyses = {
+        unusedparams = true,
+      },
+      staticcheck = true,
+    },
   },
 }
 
-require'lspconfig'.eslint.setup{}
-
-require 'lspconfig'.gopls.setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
-    cmd = {'gopls', '--remote=auto'},
-    settings = {
-            gopls = {
-                    analyses = {
-                            unusedparams = true,
-                    },
-                    staticcheck = true,
-            },
-    },
+require 'lspconfig'.golangci_lint_ls.setup {
+  on_attach = on_attach,
+  cmd = { 'golangci-lint-langserver', '--nolintername' },
+  init_options = {
+    command = { "golangci-lint", "run", "--enable-all", "--disable",
+      "tagliatelle,varnamelen,lll,exhaustruct,exhaustivestruct,typecheck,wrapcheck,godox", "--out-format", "json" },
+  },
 }
+
+require 'lspconfig'.eslint.setup {}
+
 
 vim.api.nvim_set_keymap('n', '<leader>gw', [[<cmd>lua require('telescope').extensions.git_worktree.git_worktrees()<CR>]]
   , opts)
@@ -133,3 +135,9 @@ vim.api.nvim_set_keymap('n', '<leader>gc',
   [[<cmd>lua require('telescope').extensions.git_worktree.create_git_worktree()<CR>]], opts)
 
 require("luasnip.loaders.from_vscode").lazy_load()
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+  severity_sort = true
+}
+)

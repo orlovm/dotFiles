@@ -43,6 +43,7 @@ from libqtile import hook
 mod = "mod4"
 terminal = "alacritty"
 
+dgroups_key_binder = simple_key_binder(mod)
 groups = [
          ScratchPad("scratchpad", [
               DropDown("term", "alacritty --config-file /home/mikhail/.alacritty_quake.yml",
@@ -64,7 +65,7 @@ groups = [
 # Allow MODKEY+[0 through 9] to bind to groups, see https://docs.qtile.org/en/stable/manual/config/groups.html
 # MOD4 + index Number : Switch to Group[index]
 # MOD4 + shift + index Number : Send active window to another Group
-dgroups_key_binder = simple_key_binder("mod4")
+# dgroups_key_binder = simple_key_binder("mod1")
 
 orange = "#E95420"
 gray = "#181818"
@@ -201,7 +202,7 @@ keys = [
 # MOD4 + index Number : Switch to Group[index]
 # MOD4 + shift + index Number : Send active window to another Group
 
-dgroups_key_binder = simple_key_binder("mod4")
+# dgroups_key_binder = simple_key_binder("mod4")
 
 layout_theme = {"border_width": 2,
                 "border_focus": orange,
