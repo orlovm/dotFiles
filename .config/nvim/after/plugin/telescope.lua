@@ -12,6 +12,7 @@ require("telescope").load_extension("git_worktree")
 require("telescope").load_extension("harpoon")
 require('telescope').load_extension('fzf')
 require('telescope').load_extension'goimpl'
+require("telescope").load_extension "file_browser"
 local opts = { noremap = true, silent = true }
 
 -- Grep string from ui input
@@ -45,3 +46,4 @@ vim.api.nvim_set_keymap("n", "<leader>gg", "<cmd>lua grepUI()<CR>", opts)
 -- LSP
 vim.api.nvim_set_keymap("n", "<leader>ds", "<cmd>:Telescope lsp_document_symbols<CR>", opts)
 vim.api.nvim_set_keymap("n", "gr", "<cmd>:Telescope lsp_references<CR>", opts)
+vim.api.nvim_set_keymap("n", "gi", "<cmd>:Telescope lsp_implementations<CR>", opts)

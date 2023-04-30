@@ -74,6 +74,7 @@ cmp.setup {
 
   sources = {
     -- { name = "gh_issues" },
+    -- { name = 'copilot' },
     { name = "nvim_lua" },
     { name = "luasnip" },
     { name = "nvim_lsp" },

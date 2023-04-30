@@ -38,8 +38,7 @@ from libqtile.lazy import lazy
 from libqtile.widget import base
 from libqtile import hook
 
-# TODO
-# XXX
+alt = "mod1"
 mod = "mod4"
 terminal = "alacritty"
 
@@ -52,15 +51,25 @@ groups = [
                        opacity=1,
                        height = 0.6),
               ]),
-          Group("DEV", layout='columns'),
-          Group("WWW", layout='monadtall'),
-          Group("DISC", layout='monadtall'),
-          Group("OTH", layout='monadtall'),
-          Group("CHAT", layout='monadtall'),
-          Group("SYS", layout='monadtall'),
-          Group("DOC", layout='monadtall'),
-          Group("VID", layout='monadtall'),
-          Group("GFX", layout='floating')]
+          # Group("DEV", layout='columns'),
+          # Group("WWW", layout='columns'),
+          # Group("DISC", layout='columns'),
+          # Group("OTH", layout='columns'),
+          # Group("CHAT", layout='columns'),
+          # Group("SYS", layout='columns'),
+          # Group("DOC", layout='columns'),
+          # Group("VID", layout='columns'),
+          # Group("GFX", layout='columns')]
+            Group("1", layout='columns'),
+            Group("2", layout='columns'),
+            Group("3", layout='columns'),
+            Group("4", layout='columns'),
+            Group("5", layout='columns'),
+            Group("6", layout='columns'),
+            Group("7", layout='columns'),
+            Group("8", layout='columns'),
+            Group("9", layout='columns'),
+            ]
             
 # Allow MODKEY+[0 through 9] to bind to groups, see https://docs.qtile.org/en/stable/manual/config/groups.html
 # MOD4 + index Number : Switch to Group[index]
@@ -69,6 +78,7 @@ groups = [
 
 orange = "#E95420"
 gray = "#181818"
+light_gray = "#282828"
 
 def VPNActive():
     try:
@@ -91,7 +101,7 @@ class Test(base.InLoopPollText):
         self.update_interval = 1
 
     def poll(self):
-        return "VPN" if VPNActive() else ""
+        return "VPN " if VPNActive() else ""
 
 keys = [
     # A list of available commands that can be bound to keys can be found
@@ -127,7 +137,7 @@ keys = [
         lazy.layout.toggle_split(),
         desc="Toggle between split and unsplit sides of stack",
     ),
-    Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
+    Key([mod], "space", lazy.spawn(terminal), desc="Launch terminal"),
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
@@ -163,10 +173,10 @@ keys = [
         lazy.spawn("pcmanfm"),
         desc='Run fm'
         ),
-    Key([mod], "space",
-        lazy.next_screen(),
-        desc='Move focus to next monitor'
-        ),
+    # Key([mod], "space",
+    #     lazy.next_screen(),
+    #     desc='Move focus to next monitor'
+    #     ),
     # Dmenu scripts 
     Key([mod, "control"], "k",
         lazy.spawn("dm-kill"),
@@ -192,10 +202,11 @@ keys = [
         lazy.spawn("maim | xclip -selection clipboard -t image/png"),
         desc='prntscr'
         ),
-    Key([mod], "u",
-        subprocess.call(['maim', '|', 'xclip' '-selection' 'clipboard' '-t' 'image/png']),
-        desc='prntscr'
-        ),
+    # Key([mod], "u",
+    #     subprocess.call(['maim', '|', 'xclip' '-selection' 'clipboard' '-t' 'image/png']),
+    #     desc='prntscr'
+    #     ),
+    Key([alt], "Shift_L",  lazy.widget["keyboardlayout"].next_keyboard()),
 ]
 
 # Allow MODKEY+[0 through 9] to bind to groups, see https://docs.qtile.org/en/stable/manual/config/groups.html
@@ -212,8 +223,8 @@ layout_theme = {"border_width": 2,
 # border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=4
 layouts = [
     Columns(**layout_theme),
-    Max(**layout_theme),
-    Floating(**layout_theme),
+    # Max(**layout_theme),
+    # Floating(**layout_theme),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
@@ -245,7 +256,8 @@ def initGroupBox():
                   this_screen_border = orange,
                   disable_drag=True,
                   use_mouse_wheel=False,
-                  fontsize=18,
+                  # fontsize=18,
+                  fontsize=24,
                   margin_y=3,
                   padding_y=1,
                )
@@ -254,7 +266,7 @@ screens = [
     Screen(
         bottom=bar.Bar(
             [
-                widget.CurrentLayout(),
+                # widget.CurrentLayout(),
                 initGroupBox(),
                 widget.WindowName(
                     ),
@@ -264,26 +276,33 @@ screens = [
                     },
                     name_transform=lambda name: name.upper(),
                 ),
+                widget.Wlan(
+                    interface='wlp0s20f3',
+                    format='WLAN: {essid}, {percent:2.0%} ',
+                    ),
+                # widget.Net(
+                #     interface='wlp0s20f3',
+                #     format='{down}↓↑{up} ',
+                #     ),
                 widget.Memory(
                     measure_mem='G',
-                    format='{MemUsed: .00f}{mm}',
+                    format='RAM: {MemUsed: .00f}{mm} ',
                     ),
                 Test(foreground=orange),
-                widget.Volume(),
-                widget.Systray(
-                    icon_size = 15,
+                widget.Volume(
+                    fmt='VOL: {} ',
                     ),
-                # widget.KeyboardLayout(
-                #     fmt = '{}',
-                #     padding = 5
-                #     ),
-                widget.Battery(),
-                widget.Clock(format="%Y-%m-%d %a %H:%M", 
+                widget.Battery(
+                    format='BAT: {char} {percent:2.0%} {hour:d}:{min:02d} {watt:.2f} W ',
+                    ),
+                widget.Systray(icon_size = 20),
+                widget.Clock(format=" %Y-%m-%d %a %H:%M", 
                     mouse_callbacks={
                         'Button1': lazy.spawn('gsimplecal next_month'), 
                         'Button3': lazy.spawn('gsimplecal prev_month'), 
                         'Button2': lazy.spawn('pkill gsimplecal') 
                     }),
+                widget.KeyboardLayout(configured_keyboards=['us', 'ru']),
             ],
             28,
             background=gray,
