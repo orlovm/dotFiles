@@ -25,6 +25,7 @@ end
 
 lspkind.init()
 
+-- local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 local cmp = require "cmp"
 
 cmp.setup {
@@ -199,6 +200,11 @@ _ = vim.cmd [[
     autocmd Filetype zsh lua require'cmp'.setup.buffer { sources = { { name = "zsh" }, } }
   augroup END
 ]]
+
+-- cmp.event:on(
+--   'confirm_done',
+--   cmp_autopairs.on_confirm_done()
+-- )
 
 -- Youtube: customizing appearance
 --

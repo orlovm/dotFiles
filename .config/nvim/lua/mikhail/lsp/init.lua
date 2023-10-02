@@ -61,7 +61,20 @@ end
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local servers = { 'pyright', 'tsserver', 'vimls', 'vuels', 'bashls', 'marksman', 'yamlls', 'dockerls' }
+
+local servers = {
+  'pyright',
+  'tsserver',
+  'vimls',
+  'vuels',
+  'bashls',
+  'marksman',
+  'yamlls',
+  'dockerls',
+  'ruby_ls',
+  'bufls',
+}
+
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {
     on_attach = on_attach,
@@ -150,17 +163,41 @@ require 'lspconfig'.gopls.setup {
   },
 }
 
+local disabled_go_linters = {
+  "deadcode",
+  "scopelint",
+  "nlreturn",
+  "varcheck",
+  "ifshort",
+  "interfacer",
+  "structcheck",
+  "maligned",
+  "nosnakecase",
+  "golint",
+  "tagliatelle",
+  "varnamelen",
+  "lll",
+  "exhaustruct",
+  "exhaustivestruct",
+  "typecheck",
+  "wrapcheck",
+  "godox",
+}
+
 require 'lspconfig'.golangci_lint_ls.setup {
   on_attach = on_attach,
   cmd = { 'golangci-lint-langserver', '--nolintername' },
   init_options = {
     command = { "golangci-lint", "run", "--enable-all", "--disable",
-      "deadcode,scopelint,varcheck,ifshort,interfacer,structcheck,maligned,nosnakecase,golint,tagliatelle,varnamelen,lll,exhaustruct,exhaustivestruct,typecheck,wrapcheck,godox", "--out-format", "json" },
+      table.concat(disabled_go_linters, ","), "--out-format", "json" },
+    -- command = { "golangci-lint", "run", "--enable-all", "--disable",
+    --   "deadcode,scopelint,nlreturn,varcheck,ifshort,interfacer,structcheck,maligned,nosnakecase,golint,tagliatelle,varnamelen,lll,exhaustruct,exhaustivestruct,typecheck,wrapcheck,godox", "--out-format", "json" },
   },
 }
 
-require 'lspconfig'.eslint.setup {}
+-- require'lspconfig'.ruby_ls.setup{ on_attach = on_attach }
 
+require 'lspconfig'.eslint.setup { on_attach = on_attach }
 
 vim.api.nvim_set_keymap('n', '<leader>gw', [[<cmd>lua require('telescope').extensions.git_worktree.git_worktrees()<CR>]]
   , opts)

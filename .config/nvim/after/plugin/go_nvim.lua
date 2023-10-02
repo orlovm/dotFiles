@@ -15,7 +15,8 @@ require("go").setup {
   icons = false,
 
   -- TODO: Test these out.
-  -- goimport = "gofumports", -- goimport command
+  goimport = "goimports", -- goimport command
+  -- goimport = "gopls", -- goimport command
   -- gofmt = "gofumpt", --gofmt cmd,
   -- max_line_len = 120, -- max line length in goline format
   -- tag_transform = false, -- tag_transfer  check gomodifytags for details

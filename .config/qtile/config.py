@@ -51,21 +51,12 @@ groups = [
                        opacity=1,
                        height = 0.6),
               ]),
-          # Group("DEV", layout='columns'),
-          # Group("WWW", layout='columns'),
-          # Group("DISC", layout='columns'),
-          # Group("OTH", layout='columns'),
-          # Group("CHAT", layout='columns'),
-          # Group("SYS", layout='columns'),
-          # Group("DOC", layout='columns'),
-          # Group("VID", layout='columns'),
-          # Group("GFX", layout='columns')]
-            Group("1", layout='columns'),
+            Group("1", layout='columns', spawn=terminal),
             Group("2", layout='columns'),
-            Group("3", layout='columns'),
+            Group("3", layout='columns', matches=[Match(wm_class=["discord"])]),
             Group("4", layout='columns'),
-            Group("5", layout='columns'),
-            Group("6", layout='columns'),
+            Group("5", layout='columns', matches=[Match(wm_class=["TelegramDesktop"])]),
+            Group("6", layout='columns', matches=[Match(wm_class=["Slack"])]),
             Group("7", layout='columns'),
             Group("8", layout='columns'),
             Group("9", layout='columns'),
@@ -80,16 +71,16 @@ orange = "#E95420"
 gray = "#181818"
 light_gray = "#282828"
 
-def VPNActive():
+def VPNActive(name):
     try:
-         a = subprocess.check_output(['nmcli', "-f", "connection.id", "connection", "show", "--active", "id", "vpn"])
+         a = subprocess.check_output(['nmcli', "-f", "connection.id", "connection", "show", "--active", "id", name])
          if a:
             return True
     except:
         return False
 
 def toggle(qtile):
-    if VPNActive():
+    if VPNActive("vpn"):
         subprocess.call(['nmcli', 'con', 'down', 'id', 'vpn'])
     else:
         subprocess.call(['nmcli', 'con', 'up', 'id', 'vpn'])
@@ -101,7 +92,11 @@ class Test(base.InLoopPollText):
         self.update_interval = 1
 
     def poll(self):
-        return "VPN " if VPNActive() else ""
+        if VPNActive("vpn"):
+            return "VPN " 
+        if VPNActive("ll"):
+            return "ll-vpn"
+        return ""
 
 keys = [
     # A list of available commands that can be bound to keys can be found
@@ -158,12 +153,20 @@ keys = [
         lazy.spawn("pulsemixer --toggle-mute")
     ),
     Key([mod], "r",
-        lazy.spawn("dmenu_run -p 'Run: '"),
+        lazy.spawn("dmenu_run -fn 'Monospace-10' -p 'Run: '"),
         desc='Run Launcher'
         ),
     Key([mod], "b",
-        lazy.spawn("google-chrome-stable"),
+        lazy.spawn('google-chrome-stable --profile-directory="Profile 1" --class=chrome_profile_1 --new-window'),
         desc='Run browser'
+        ),
+    Key([mod], "w",
+        lazy.spawn('google-chrome-stable --profile-directory="Profile 5" --class=chrome_profile_5 --new-window'),
+        desc='Run browser'
+        ),
+    Key([mod], "d",
+        lazy.spawn('Discord'),
+        desc='Discord'
         ),
     Key([mod], "c",
         lazy.spawn("telegram-desktop"),
@@ -179,33 +182,29 @@ keys = [
     #     ),
     # Dmenu scripts 
     Key([mod, "control"], "k",
-        lazy.spawn("dm-kill"),
+        lazy.spawn("dm-kill -fn 'Monospace-10'"),
         desc='Kill processes via dmenu'
         ),
     Key([mod, "control"], "q",
-        lazy.spawn("dm-logout"),
+        lazy.spawn("dm-logout -fn 'Monospace-10'"),
         desc='A logout menu'
         ),
     Key([mod], "e",
-        lazy.spawn("dm-confedit"), 
+        lazy.spawn("dm-confedit -fn 'Monospace-10'"), 
         desc='Choose a config file to edit'
         ),
-    Key([mod], "p",
-        lazy.spawn("dm-maim"),
-        desc='Take screenshots via dmenu'
-        ),
+    Key(
+        [mod, "control"], "p",
+        lazy.spawn("sh -c 'maim | xclip -selection clipboard -t image/png'")
+    ),
+    Key(
+        [mod], "p",
+        lazy.spawn("sh -c 'maim -s | xclip -selection clipboard -t image/png'")
+    ),
     Key([mod], "v",
         lazy.function(toggle),
         desc='Toggle open vpn'
         ),
-    Key([], "Print",
-        lazy.spawn("maim | xclip -selection clipboard -t image/png"),
-        desc='prntscr'
-        ),
-    # Key([mod], "u",
-    #     subprocess.call(['maim', '|', 'xclip' '-selection' 'clipboard' '-t' 'image/png']),
-    #     desc='prntscr'
-    #     ),
     Key([alt], "Shift_L",  lazy.widget["keyboardlayout"].next_keyboard()),
 ]
 
@@ -295,7 +294,7 @@ screens = [
                 widget.Battery(
                     format='BAT: {char} {percent:2.0%} {hour:d}:{min:02d} {watt:.2f} W ',
                     ),
-                widget.Systray(icon_size = 20),
+                widget.Systray(icon_size = 30),
                 widget.Clock(format=" %Y-%m-%d %a %H:%M", 
                     mouse_callbacks={
                         'Button1': lazy.spawn('gsimplecal next_month'), 

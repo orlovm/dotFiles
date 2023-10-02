@@ -17,6 +17,7 @@ set termguicolors
 "##############################################################################"
 
 call plug#begin('~/.nvim/plugged')
+Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 Plug 'pwntester/octo.nvim'
 Plug 'jbyuki/venn.nvim'
 Plug 'shortcuts/no-neck-pain.nvim'
@@ -56,7 +57,8 @@ Plug 'tpope/vim-sensible'
 
 " DB
 Plug 'tpope/vim-dadbod'
-Plug 'b4b4r07/vim-sqlfmt', { 'do': 'pip install sqlparse' }
+" Plug 'b4b4r07/vim-sqlfmt', { 'do': 'pip install sqlparse' }
+Plug 'pbogut/vim-dadbod-ssh'
 
 Plug 'chrisbra/csv.vim'
 
@@ -65,7 +67,6 @@ Plug 'kristijanhusak/vim-dadbod-ui', {'on': 'DBUIToggle'}
 Plug 'kristijanhusak/vim-dadbod-completion'
 
 " Color scheme
-" Plug 'sainnhe/gruvbox-material', { 'commit': '66f66f64788f66c8101aa35344dd005143356b6b' }
 Plug 'sainnhe/gruvbox-material'
 
 " SplitJoin
@@ -108,8 +109,7 @@ Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'gorkunov/smartpairs.vim'
 
 Plug 'stevearc/dressing.nvim'
-" Insert pairs [ -> []
-Plug 'jiangmiao/auto-pairs'
+Plug 'altermo/ultimate-autopair.nvim', {'branch': 'v0.6'}
 " Highlight hex colors like #ff0000 with :ColorHighlight
 Plug 'chrisbra/color_highlight'
 Plug 'mkitt/tabline.vim'
@@ -141,6 +141,9 @@ Plug 'zbirenbaum/copilot.lua'
 Plug 'zbirenbaum/copilot-cmp'
 " Plug 'simrat39/inlay-hints.nvim'
 Plug 'folke/neodev.nvim'
+Plug 'lambdalisue/suda.vim'
+Plug 'm4xshen/hardtime.nvim'
+Plug 'tzachar/highlight-undo.nvim'
 call plug#end()
 
 
@@ -240,7 +243,7 @@ let g:db_ui_show_database_icon = 1
 nnoremap <silent> gb :<C-u>call gitblame#echo()<CR>
 
 " DBUI
-nnoremap <silent> <leader>d :DBUIToggle<CR>
+nnoremap <silent> <space>d :DBUIToggle<CR>
 
 nnoremap <silent> <C-n> :NeoTreeRevealToggle<CR>
 
@@ -248,7 +251,6 @@ nnoremap <silent> <C-n> :NeoTreeRevealToggle<CR>
 let g:sqlfmt_command = "sqlformat"
 let g:sqlfmt_options = "-r -k upper"
 "let g:sqlfmt_auto = 0
-
 " let g:gruvbox_material_background = 'hard'
 let g:gruvbox_material_foreground = 'original'
 let g:gruvbox_material_sign_column_background = 'none'
@@ -277,3 +279,27 @@ highlight! link NeoTreeDirectoryName NvimTreeOpenedFolderName
 highlight! link NeoTreeFileNameOpened NvimTreeOpenedFile
 highlight! link NeoTreeNormal Normal
 highlight! link NeoTreeEndOfBuffer NvimTreeFolderIcon
+
+lua << END
+  local augroup = vim.api.nvim_create_augroup
+  local autocmd = vim.api.nvim_create_autocmd
+  local yank_group = augroup('HighlightYank', {})
+  autocmd('TextYankPost', {
+      group = yank_group,
+      pattern = '*',
+      callback = function()
+          vim.highlight.on_yank({
+              higroup = 'Search',
+              timeout = 100,
+          })
+      end,
+  })
+
+  vim.keymap.set("n", "<C-d>", "<C-d>zz")
+  vim.keymap.set("n", "<C-u>", "<C-u>zz")
+  vim.keymap.set("n", "n", "nzzzv")
+  vim.keymap.set("n", "N", "Nzzzv")
+  vim.keymap.set("x", "<leader>p", [["_dP]])
+  vim.keymap.set({"n", "v"}, "<leader>d", [["_d]])
+  vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+END
