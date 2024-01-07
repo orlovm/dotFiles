@@ -6,6 +6,10 @@
 "################################ Vim settings ################################"
 let mapleader = ","
 
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
+    \ execute 'cd '.argv()[0] | endif
+
 "Fix Sizing Bug With Alacritty Terminal
 autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
 
@@ -20,7 +24,7 @@ call plug#begin('~/.nvim/plugged')
 Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 Plug 'pwntester/octo.nvim'
 Plug 'jbyuki/venn.nvim'
-Plug 'shortcuts/no-neck-pain.nvim'
+Plug 'shortcuts/no-neck-pain.nvim', { 'branch': 'v1.7.0' }
 Plug 'ThePrimeagen/vim-be-good'
 Plug 'edolphin-ydf/goimpl.nvim'
 Plug 'rcarriga/nvim-notify'
@@ -73,7 +77,8 @@ Plug 'sainnhe/gruvbox-material'
 Plug 'Wansmer/treesj'
 
 " Navigation
-Plug 'nvim-neo-tree/neo-tree.nvim'
+Plug 'stevearc/oil.nvim'
+" Plug 'nvim-neo-tree/neo-tree.nvim'
 "auto update buffer
 Plug 'https://github.com/chrisbra/vim-autoread.git' 
 
@@ -245,7 +250,7 @@ nnoremap <silent> gb :<C-u>call gitblame#echo()<CR>
 " DBUI
 nnoremap <silent> <space>d :DBUIToggle<CR>
 
-nnoremap <silent> <C-n> :NeoTreeRevealToggle<CR>
+" nnoremap <silent> <C-n> :NeoTreeRevealToggle<CR>
 
 "SQL formatter config
 let g:sqlfmt_command = "sqlformat"
@@ -302,4 +307,15 @@ lua << END
   vim.keymap.set("x", "<leader>p", [["_dP]])
   vim.keymap.set({"n", "v"}, "<leader>d", [["_d]])
   vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+
+  vim.keymap.set("n", "i", function()
+    if #vim.fn.getline(".") == 0 then
+      return [["_cc]]
+    else
+      return "i"
+    end
+  end, { expr = true, desc = "properly indent on empty line when insert" })
 END
+
+
+command! Gfetch :G fetch -u origin 'refs/heads/*:refs/heads/*'

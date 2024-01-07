@@ -37,6 +37,7 @@ from libqtile.layout.max import Max
 from libqtile.lazy import lazy
 from libqtile.widget import base
 from libqtile import hook
+# from libqtile.widget import Bluetooth
 
 alt = "mod1"
 mod = "mod4"
@@ -157,11 +158,11 @@ keys = [
         desc='Run Launcher'
         ),
     Key([mod], "b",
-        lazy.spawn('google-chrome-stable --profile-directory="Profile 1" --class=chrome_profile_1 --new-window'),
+        lazy.spawn('env GTK_THEME=Adwaita google-chrome-stable --profile-directory="Profile 1" --class=chrome_profile_1 --new-window'),
         desc='Run browser'
         ),
     Key([mod], "w",
-        lazy.spawn('google-chrome-stable --profile-directory="Profile 5" --class=chrome_profile_5 --new-window'),
+        lazy.spawn('env GTK_THEME=Adwaita google-chrome-stable --profile-directory="Profile 5" --class=chrome_profile_5 --new-window'),
         desc='Run browser'
         ),
     Key([mod], "d",
@@ -269,20 +270,12 @@ screens = [
                 initGroupBox(),
                 widget.WindowName(
                     ),
-                widget.Chord(
-                    chords_colors={
-                        "launch": ("#ff0000", "#ff00ff"),
-                    },
-                    name_transform=lambda name: name.upper(),
-                ),
+                # Bluetooth(
+                # ),
                 widget.Wlan(
                     interface='wlp0s20f3',
                     format='WLAN: {essid}, {percent:2.0%} ',
                     ),
-                # widget.Net(
-                #     interface='wlp0s20f3',
-                #     format='{down}↓↑{up} ',
-                #     ),
                 widget.Memory(
                     measure_mem='G',
                     format='RAM: {MemUsed: .00f}{mm} ',

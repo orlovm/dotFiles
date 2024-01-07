@@ -15,9 +15,10 @@ require("go").setup {
   icons = false,
 
   -- TODO: Test these out.
-  goimport = "goimports", -- goimport command
+  -- goimport = "goimport", -- goimport command
   -- goimport = "gopls", -- goimport command
   -- gofmt = "gofumpt", --gofmt cmd,
+  gofmt = "gofmt",
   -- max_line_len = 120, -- max line length in goline format
   -- tag_transform = false, -- tag_transfer  check gomodifytags for details
   -- test_template = "", -- default to testify if not set; g:go_nvim_tests_template  check gotests for details

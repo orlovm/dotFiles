@@ -3,7 +3,7 @@
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    selected=$(find ~/go/src ~/python ~/ruby ~/.config/nvim ~/.config/nvim/lua ~/.nvim/plugged -mindepth 1 -maxdepth 1 -type d | fzf)
+    selected=$(find ~/go/src ~/python ~/ruby ~/.config/ ~/.nvim/plugged -mindepth 1 -maxdepth 1 -type d | fzf)
 fi
 
 if [[ -z $selected ]]; then

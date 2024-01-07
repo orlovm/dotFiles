@@ -182,6 +182,7 @@ local disabled_go_linters = {
   "typecheck",
   "wrapcheck",
   "godox",
+  "depguard",
 }
 
 require 'lspconfig'.golangci_lint_ls.setup {

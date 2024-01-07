@@ -112,4 +112,5 @@ alias rr='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/mas
 bindkey -v
 alias vim="nvim"
 alias vi="nvim"
+alias discord="Discord"
 bindkey -s ^f "tmux-sessionizer\n"

@@ -32,13 +32,14 @@ end
 
 local blame = { sections = { lualine_a = { fugitive_branch }, lualine_z = { 'location' } }, filetypes = {'fugitiveblame'} }
 local db = { sections = { lualine_a = { db }}, filetypes = {'dbui'} }
+local nnp = { sections = {}, filetypes = {'no-neck-pain'} }
 require('lualine').setup {
-  extensions = {'neo-tree', 'fzf', 'fugitive', blame, db},
+  extensions = {'neo-tree', 'fzf', 'fugitive', blame, db, nnp},
   sections = {
     lualine_a = {'mode'},
     lualine_b = {'branch', 'diagnostics'},
     lualine_c = {{ 'filename', path = 1 }},
-    lualine_x = {'filetype'},
+    lualine_x = {'filetype', {'diagnostics', sources = {'nvim_workspace_diagnostic'}, sections = {'error'}}},
     lualine_y = {'progress'},
     lualine_z = {'location'}
   },
