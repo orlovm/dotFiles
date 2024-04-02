@@ -42,9 +42,10 @@ vim.api.nvim_set_keymap("n", "<C-p>", "<cmd>:Telescope fd<CR>", opts)
 vim.api.nvim_set_keymap("n", "<leader>f", "<cmd>:Telescope grep_string<CR>", opts)
 vim.api.nvim_set_keymap("n", "<leader>lg", "<cmd>:Telescope live_grep<CR>", opts)
 vim.api.nvim_set_keymap("n", "<leader>gg", "<cmd>lua grepUI()<CR>", opts)
+vim.api.nvim_set_keymap("n", "<leader>tr", "<cmd>:Telescope resume<CR>", opts)
 
 -- LSP
 vim.api.nvim_set_keymap("n", "<leader>ds", "<cmd>:Telescope lsp_document_symbols<CR>", opts)
-vim.api.nvim_set_keymap("n", "gr", "<cmd>:Telescope lsp_references<CR>", opts)
+vim.api.nvim_set_keymap("n", "gr", "<cmd>:lua require('telescope.builtin').lsp_references({ include_declaration = false })<CR>", opts)
 vim.api.nvim_set_keymap("n", "gi", "<cmd>:Telescope lsp_implementations<CR>", opts)
 vim.api.nvim_set_keymap("n", "<leader>td", "<cmd>:lua require('telescope.builtin').diagnostics({sort_by = 'severity'})<CR>", opts)

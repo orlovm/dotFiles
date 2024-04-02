@@ -15,10 +15,10 @@ require("go").setup {
   icons = false,
 
   -- TODO: Test these out.
-  -- goimport = "goimport", -- goimport command
+  -- goimport = "goimports", -- goimport command
   -- goimport = "gopls", -- goimport command
   -- gofmt = "gofumpt", --gofmt cmd,
-  gofmt = "gofmt",
+  -- gofmt = "gofmt",
   -- max_line_len = 120, -- max line length in goline format
   -- tag_transform = false, -- tag_transfer  check gomodifytags for details
   -- test_template = "", -- default to testify if not set; g:go_nvim_tests_template  check gotests for details
@@ -33,4 +33,13 @@ require("go").setup {
 }
 
 -- Run gofmt + goimport on save
-vim.api.nvim_exec([[ autocmd BufWritePre *.go :silent! lua require('go.format').goimport() ]], false)
+vim.api.nvim_exec([[ autocmd BufWritePre (InsertLeave?) <buffer> lua vim.lsp.buf.formatting_sync(nil,500) ]], false)
+local format_sync_grp = vim.api.nvim_create_augroup("GoImport", {})
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.go",
+  callback = function()
+   require('go.format').goimport()
+  end,
+  group = format_sync_grp,
+})
+-- autocmd BufWritePre (InsertLeave?) <buffer> lua vim.lsp.buf.formatting_sync(nil,500)

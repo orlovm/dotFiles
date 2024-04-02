@@ -31,6 +31,7 @@ Plug 'rcarriga/nvim-notify'
 Plug 'nvim-lua/popup.nvim'
 "Debugger
 Plug 'mfussenegger/nvim-dap'
+Plug 'MunifTanjim/nui.nvim'
 Plug 'leoluz/nvim-dap-go'
 Plug 'rcarriga/nvim-dap-ui'
 
@@ -43,7 +44,7 @@ Plug 'nvim-lualine/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'lukas-reineke/virt-column.nvim'
 Plug 'nvim-lua/plenary.nvim'
-Plug 'MunifTanjim/nui.nvim'
+Plug 'nvim-neotest/nvim-nio'
 Plug 'ThePrimeagen/harpoon'
 
 Plug 'tpope/vim-unimpaired'
@@ -250,7 +251,7 @@ nnoremap <silent> gb :<C-u>call gitblame#echo()<CR>
 " DBUI
 nnoremap <silent> <space>d :DBUIToggle<CR>
 
-" nnoremap <silent> <C-n> :NeoTreeRevealToggle<CR>
+nnoremap <silent> <C-n> :Oil<CR>
 
 "SQL formatter config
 let g:sqlfmt_command = "sqlformat"

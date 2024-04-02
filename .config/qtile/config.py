@@ -46,9 +46,9 @@ terminal = "alacritty"
 dgroups_key_binder = simple_key_binder(mod)
 groups = [
          ScratchPad("scratchpad", [
-              DropDown("term", "alacritty --config-file /home/mikhail/.alacritty_quake.yml",
+              DropDown("term", "alacritty --config-file /home/mikhail/.alacritty_quake.toml",
                        opacity=1,),
-              DropDown("htop", "alacritty --config-file /home/mikhail/.alacritty_quake.yml -e htop",
+              DropDown("htop", "alacritty --config-file /home/mikhail/.alacritty_quake.toml -e htop",
                        opacity=1,
                        height = 0.6),
               ]),
