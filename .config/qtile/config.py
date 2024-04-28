@@ -39,6 +39,10 @@ from libqtile.widget import base
 from libqtile import hook
 # from libqtile.widget import Bluetooth
 
+@hook.subscribe.startup_once
+def autostart_once():
+    subprocess.run('exec /usr/bin/solaar -w hide')
+
 alt = "mod1"
 mod = "mod4"
 terminal = "alacritty"

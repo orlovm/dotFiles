@@ -71,7 +71,7 @@ local servers = {
   'marksman',
   'yamlls',
   'dockerls',
-  'ruby_ls',
+  'ruby_lsp',
   'bufls',
 }
 

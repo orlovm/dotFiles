@@ -25,6 +25,7 @@ Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 Plug 'pwntester/octo.nvim'
 Plug 'jbyuki/venn.nvim'
 Plug 'shortcuts/no-neck-pain.nvim', { 'branch': 'v1.7.0' }
+" Plug 'shortcuts/no-neck-pain.nvim'
 Plug 'ThePrimeagen/vim-be-good'
 Plug 'edolphin-ydf/goimpl.nvim'
 Plug 'rcarriga/nvim-notify'
@@ -141,8 +142,8 @@ Plug 'ThePrimeagen/git-worktree.nvim'
 " backticks textobj
 Plug 'https://github.com/kana/vim-textobj-user'
 Plug 'https://github.com/fvictorio/vim-textobj-backticks'
-
-Plug 'rest-nvim/rest.nvim'
+Plug 'vhyrro/luarocks.nvim'
+" Plug 'rest-nvim/rest.nvim'
 Plug 'zbirenbaum/copilot.lua'
 Plug 'zbirenbaum/copilot-cmp'
 " Plug 'simrat39/inlay-hints.nvim'
