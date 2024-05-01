@@ -1,0 +1,3 @@
+return {
+  "gorkunov/smartpairs.vim",
+}

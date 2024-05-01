@@ -6,7 +6,6 @@ return {
     config = function()
       require("rest-nvim").setup()
     end,
-    lazy = false,
     keys = {
       {
         "<leader>rr", "<cmd>Rest run<cr>", "Run request under the cursor",

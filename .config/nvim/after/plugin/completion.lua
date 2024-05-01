@@ -82,6 +82,7 @@ cmp.setup {
     { name = "path" },
     { name = 'buffer', option = { keyword_length = 3 }},
     { name = 'nvim_lsp_signature_help' },
+    -- { name = "cmp-dbee" }
   },
 
   cmp.setup.filetype({ 'mysql', 'sql' }, {
@@ -101,6 +102,7 @@ cmp.setup {
       end
     },
   }),
+
   -- sorting = {
   --   -- TODO: Would be cool to add stuff like "See variable names before method names" in rust, or something like that.
   --   comparators = {

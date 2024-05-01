@@ -5,7 +5,6 @@ require "mikhail.disable_builtin"
 
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
-local command = vim.api.nvim_create_user_command
 
 autocmd("StdinReadPre", {
   pattern = "*",
@@ -41,9 +40,6 @@ autocmd('TextYankPost', {
     })
   end,
 })
-
-
-command('Gfetch', function() vim.cmd("G fetch -u origin 'refs/heads/*:refs/heads/*'") end, {})
 
 autocmd('FileType', {
   pattern = { "go", "js", "vim", "lua" },
