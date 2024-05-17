@@ -1,59 +1,56 @@
 return {
   {
     "nvim-telescope/telescope.nvim",
+    version = 'v0.1.5',
     config = function()
       require("telescope").setup {
         defaults = {
           file_ignore_patterns = { "vendor" },
-          layout_config = {
-            width = 0.9
-            -- other layout configuration here
-          },
-          -- other defaults configuration here
+          layout_config = { width = 0.9 },
         },
       }
       require("telescope").load_extension("git_worktree")
       require("telescope").load_extension("harpoon")
       require('telescope').load_extension('fzf')
       require('telescope').load_extension 'goimpl'
+
       local opts = { noremap = true, silent = true }
 
       -- Grep string from ui input
-      local function grep(input)
-        if input == nil then
-          return
-        end
-        require 'telescope.builtin'.grep_string({ search = input })
-      end
-
-      function grepUI()
-        vim.ui.input({ prompt = "Grep", kind = "grep" }, grep)
+      local function grepUI()
+        vim.ui.input({ prompt = "Grep", kind = "grep" }, function(input)
+          if input == nil then
+            return
+          end
+          require 'telescope.builtin'.grep_string({ search = input })
+        end)
       end
 
       -- Mappings
+      local builtin = require("telescope.builtin")
 
       -- Vim
-      vim.api.nvim_set_keymap("n", "<leader>bb", "<cmd>:Telescope buffers<CR>", opts)
-      vim.api.nvim_set_keymap("n", "<leader>km", "<cmd>:Telescope keymaps<CR>", opts)
+      vim.keymap.set("n", "<leader>bb", builtin.buffers, opts)
+      vim.keymap.set("n", "<leader>km", builtin.keymaps, opts)
 
       -- Git
-      vim.api.nvim_set_keymap("n", "<leader>gb", "<cmd>:Telescope git_branches<CR>", opts)
-      vim.api.nvim_set_keymap("n", "<leader>gs", "<cmd>:Telescope git_status<CR>", opts)
+      vim.keymap.set("n", "<leader>gb", builtin.git_branches, opts)
+      vim.keymap.set("n", "<leader>gs", builtin.git_status, opts)
 
       -- Search
-      vim.api.nvim_set_keymap("n", "<C-p>", "<cmd>:Telescope fd<CR>", opts)
-      vim.api.nvim_set_keymap("n", "<leader>f", "<cmd>:Telescope grep_string<CR>", opts)
-      vim.api.nvim_set_keymap("n", "<leader>lg", "<cmd>:Telescope live_grep<CR>", opts)
-      vim.api.nvim_set_keymap("n", "<leader>gg", "<cmd>lua grepUI()<CR>", opts)
-      vim.api.nvim_set_keymap("n", "<leader>tr", "<cmd>:Telescope resume<CR>", opts)
+      vim.keymap.set("n", "<C-p>", builtin.find_files, opts)
+      vim.keymap.set("n", "<leader>f", builtin.grep_string, opts)
+      vim.keymap.set("n", "<leader>lg", builtin.live_grep, opts)
+      vim.keymap.set("n", "<leader>gg", grepUI, opts)
+      vim.keymap.set("n", "<leader>tr", builtin.resume, opts)
 
       -- LSP
-      vim.api.nvim_set_keymap("n", "<leader>ds", "<cmd>:Telescope lsp_document_symbols<CR>", opts)
-      vim.api.nvim_set_keymap("n", "gr",
-        "<cmd>:lua require('telescope.builtin').lsp_references({ include_declaration = false })<CR>", opts)
-      vim.api.nvim_set_keymap("n", "gi", "<cmd>:Telescope lsp_implementations<CR>", opts)
-      vim.api.nvim_set_keymap("n", "<leader>td",
-        "<cmd>:lua require('telescope.builtin').diagnostics({sort_by = 'severity'})<CR>", opts)
+      vim.keymap.set("n", "<leader>ds", builtin.lsp_document_symbols, opts)
+      vim.keymap.set("n", "gr", function() builtin.lsp_references({ include_declaration = false }) end, opts)
+      vim.keymap.set("n", "gi", builtin.lsp_implementations, opts)
+      vim.keymap.set("n", "<leader>td", function() builtin.diagnostics({ sort_by = "severity" }) end, opts)
+      vim.keymap.set('n', '<leader>gw', require('telescope').extensions.git_worktree.git_worktrees, opts)
+      vim.keymap.set('n', '<leader>gc', require('telescope').extensions.git_worktree.create_git_worktree, opts)
     end,
   },
   {

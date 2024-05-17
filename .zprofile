@@ -6,3 +6,4 @@ if [ -z "$DISPLAY" ] && [ "$(fgconsole)" -eq 1 ]; then
 startx
 fi
 bindkey -s ^f "tmux-sessionizer\n"
+export QT_QPA_PLATFORMTHEME=qt5ct

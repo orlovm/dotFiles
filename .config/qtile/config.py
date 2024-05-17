@@ -33,9 +33,8 @@ from libqtile.dgroups import simple_key_binder
 from libqtile.dgroups import simple_key_binder
 from libqtile.layout.columns import Columns
 from libqtile.layout.floating import Floating
-from libqtile.layout.max import Max
 from libqtile.lazy import lazy
-from libqtile.widget import base
+from libqtile.widget import base, battery
 from libqtile import hook
 # from libqtile.widget import Bluetooth
 
@@ -211,6 +210,7 @@ keys = [
         desc='Toggle open vpn'
         ),
     Key([alt], "Shift_L",  lazy.widget["keyboardlayout"].next_keyboard()),
+    # Noop caps lock
 ]
 
 # Allow MODKEY+[0 through 9] to bind to groups, see https://docs.qtile.org/en/stable/manual/config/groups.html
@@ -265,6 +265,8 @@ def initGroupBox():
                   margin_y=3,
                   padding_y=1,
                )
+def charge_controller():
+    return (40, 45)
 
 screens = [
     Screen(
@@ -278,20 +280,24 @@ screens = [
                 # ),
                 widget.Wlan(
                     interface='wlp0s20f3',
-                    format='WLAN: {essid}, {percent:2.0%} ',
+                    format='  {essid}-{percent:2.0%} ',
                     ),
                 widget.Memory(
                     measure_mem='G',
-                    format='RAM: {MemUsed: .00f}{mm} ',
+                    format='RAM{MemUsed: .00f}{mm} ',
                     ),
                 Test(foreground=orange),
                 widget.Volume(
-                    fmt='VOL: {} ',
+                    fmt='  {} ',
                     ),
                 widget.Battery(
-                    format='BAT: {char} {percent:2.0%} {hour:d}:{min:02d} {watt:.2f} W ',
+                    format=' {char}{percent:2.0%} {hour:d}:{min:02d} {watt:.2f}W ',
+                    notify_below=15,
+                    charge_char = u'↑',
+                    discharge_char = u'↓',
+                    charge_controller=charge_controller
                     ),
-                widget.Systray(icon_size = 30),
+                widget.Systray(icon_size = 28),
                 widget.Clock(format=" %Y-%m-%d %a %H:%M", 
                     mouse_callbacks={
                         'Button1': lazy.spawn('gsimplecal next_month'), 
@@ -300,29 +306,10 @@ screens = [
                     }),
                 widget.KeyboardLayout(configured_keyboards=['us', 'ru']),
             ],
-            28,
+            42,
             background=gray,
         ),
     wallpaper='~/wp.jpg',
-        wallpaper_mode='stretch',
-    ),
-    Screen(
-        bottom=bar.Bar(
-            [
-                widget.CurrentLayout(),
-                initGroupBox(),
-                widget.WindowName(),
-                widget.Chord(
-                    chords_colors={
-                        "launch": ("#ff0000", "#ffffff"),
-                    },
-                    name_transform=lambda name: name.upper(),
-                ),
-            ],
-            18,
-            background=gray,
-        ),
-        wallpaper='~/wp.jpg',
         wallpaper_mode='stretch',
     ),
 ]

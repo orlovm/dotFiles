@@ -38,7 +38,7 @@ return {
       local db = { sections = { lualine_a = { db } }, filetypes = { 'dbui' } }
       local nnp = { sections = {}, filetypes = { 'no-neck-pain' } }
       require('lualine').setup {
-        extensions = { 'neo-tree', 'fzf', 'fugitive', blame, db, nnp },
+        extensions = { 'neo-tree', 'oil', 'fzf', 'fugitive', blame, db, nnp },
         sections = {
           lualine_a = { 'mode' },
           lualine_b = { 'branch', 'diagnostics' },

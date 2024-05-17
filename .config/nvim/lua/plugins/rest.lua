@@ -3,9 +3,7 @@ return {
     "rest-nvim/rest.nvim",
     ft = "http",
     dependencies = { "luarocks.nvim" },
-    config = function()
-      require("rest-nvim").setup()
-    end,
+    config = true,
     keys = {
       {
         "<leader>rr", "<cmd>Rest run<cr>", "Run request under the cursor",
