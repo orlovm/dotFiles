@@ -26,8 +26,13 @@ set("n", "<CR>", function()
   end
 end, { expr = true, desc = "toggle hlsearch if it's on, otherwise just do ender" })
 
-set("n", "]d", vim.diagnostic.goto_next)
-set("n", "[d", vim.diagnostic.goto_prev)
-
 set('n', '<space>e', vim.diagnostic.open_float)
 set('n', '<space>q', vim.diagnostic.setloclist)
+
+set("n", "<c-j>", "<c-w><c-j>")
+set("n", "<c-k>", "<c-w><c-k>")
+set("n", "<c-l>", "<c-w><c-l>")
+set("n", "<c-h>", "<c-w><c-h>")
+
+set("n", "<left>", "gT")
+set("n", "<right>", "gt")

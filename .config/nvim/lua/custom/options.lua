@@ -1,4 +1,3 @@
-vim.opt.termguicolors = true
 vim.opt.updatetime = 50
 vim.g.mapleader = ","
 vim.opt.undofile = true

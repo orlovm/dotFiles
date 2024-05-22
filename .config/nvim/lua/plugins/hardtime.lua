@@ -54,6 +54,12 @@ return {
             ["w"] = { "n", "x" },
             ["b"] = { "n", "x" },
           },
+          disabled_keys = {
+            ["<Up>"] = { "i" },
+            ["<Down>"] = { "i" },
+            ["<Left>"] = { "i" },
+            ["<Right>"] = { "i" },
+          },
         }
       )
     end,
