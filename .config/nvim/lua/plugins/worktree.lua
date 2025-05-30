@@ -1,6 +1,8 @@
 return {
   {
-    "ThePrimeagen/git-worktree.nvim",
+    -- "ThePrimeagen/git-worktree.nvim",
+    "awerebea/git-worktree.nvim",
+    branch = "handle_changes_in_telescope_api",
     config = function()
       require("git-worktree").setup()
       local Worktree = require("git-worktree")

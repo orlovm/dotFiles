@@ -3,7 +3,7 @@ export PATH=/home/mikhail/go/bin:$PATH
 # export GDK_SCALE=2
 # autologin on tty1
 if [ -z "$DISPLAY" ] && [ "$(fgconsole)" -eq 1 ]; then
-startx
+  startx
 fi
 bindkey -s ^f "tmux-sessionizer\n"
 export QT_QPA_PLATFORMTHEME=qt5ct

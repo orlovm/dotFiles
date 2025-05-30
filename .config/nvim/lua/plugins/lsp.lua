@@ -1,20 +1,9 @@
 local disabled_go_linters = {
-  "deadcode",
-  "scopelint",
   "nlreturn",
-  "varcheck",
-  "ifshort",
-  "interfacer",
-  "structcheck",
-  "maligned",
-  "nosnakecase",
-  "golint",
   "tagliatelle",
   "varnamelen",
   "lll",
   "exhaustruct",
-  "exhaustivestruct",
-  "typecheck",
   "wrapcheck",
   "godox",
   "depguard",
@@ -46,12 +35,12 @@ return {
       local servers = {
         bashls = true,
         lua_ls = true,
-        tsserver = true,
+        ts_ls = true,
         pyright = true,
         vimls = true,
         marksman = true,
         dockerls = true,
-        bufls = true,
+        buf_ls = true,
 
         gopls = {
           cmd = { 'gopls', '--remote=auto' },
@@ -66,13 +55,13 @@ return {
 
         },
 
-        golangci_lint_ls = {
-          cmd = { 'golangci-lint-langserver', '--nolintername' },
-          init_options = {
-            command = { "golangci-lint", "run", "--enable-all", "--disable",
-              table.concat(disabled_go_linters, ","), "--out-format", "json" },
-          },
-        },
+        -- golangci_lint_ls = {
+        --   cmd = { 'golangci-lint-langserver', '--nolintername' },
+        --   init_options = {
+        --     command = { "golangci-lint", "run", "--default=all", "--disable",
+        --       table.concat(disabled_go_linters, ","), "--output.json.path=stdout" },
+        --   },
+        -- },
 
         jsonls = {
           settings = {
@@ -94,6 +83,13 @@ return {
             },
           },
         },
+
+        ruby_lsp = {
+          init_options = {
+            formatter = 'standard',
+            linters = { 'standard' },
+          },
+        }
       }
 
       local servers_to_install = vim.tbl_filter(function(key)

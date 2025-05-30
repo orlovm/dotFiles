@@ -4,6 +4,7 @@ return {
     config = function()
       require('notify').setup({
         level = vim.log.levels.INFO,
+        merge_duplicates = true,
         timeout = 2500,
         background_colour = "NotifyBackground",
         minimum_width = 50,

@@ -27,7 +27,6 @@
 import subprocess
 
 from libqtile import bar, widget
-from libqtile.command import lazy
 from libqtile.config import Click, Drag, DropDown, Group, Key, Match, ScratchPad, Screen
 from libqtile.dgroups import simple_key_binder
 from libqtile.dgroups import simple_key_binder
@@ -84,10 +83,10 @@ def VPNActive(name):
         return False
 
 def toggle(qtile):
-    if VPNActive("vpn"):
-        subprocess.call(['nmcli', 'con', 'down', 'id', 'vpn'])
+    if VPNActive("ll"):
+        subprocess.call(['nmcli', 'con', 'down', 'id', 'll'])
     else:
-        subprocess.call(['nmcli', 'con', 'up', 'id', 'vpn'])
+        subprocess.call(['nmcli', 'con', 'up', 'id', 'll'])
 
 class Test(base.InLoopPollText):
 
@@ -284,7 +283,7 @@ screens = [
                     ),
                 widget.Memory(
                     measure_mem='G',
-                    format='RAM{MemUsed: .00f}{mm} ',
+                    format='󰍛{MemUsed: .00f}{mm} ',
                     ),
                 Test(foreground=orange),
                 widget.Volume(
@@ -292,7 +291,7 @@ screens = [
                     ),
                 widget.Battery(
                     format=' {char}{percent:2.0%} {hour:d}:{min:02d} {watt:.2f}W ',
-                    notify_below=15,
+                    notify_below=16,
                     charge_char = u'↑',
                     discharge_char = u'↓',
                     charge_controller=charge_controller

@@ -21,6 +21,7 @@ local parsers = {
   "toml",
   "ruby",
   "sql",
+  "html",
 }
 
 return {

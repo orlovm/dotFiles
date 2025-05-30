@@ -1,7 +1,7 @@
 return {
   {
     "nvim-telescope/telescope.nvim",
-    version = 'v0.1.5',
+    -- version = 'v0.1.5',
     config = function()
       require("telescope").setup {
         defaults = {
@@ -46,7 +46,7 @@ return {
 
       -- LSP
       vim.keymap.set("n", "<leader>ds", builtin.lsp_document_symbols, opts)
-      vim.keymap.set("n", "gr", function() builtin.lsp_references({ include_declaration = false }) end, opts)
+      vim.keymap.set("n", "gr", function() builtin.lsp_references({ include_declaration = true }) end, opts)
       vim.keymap.set("n", "gi", builtin.lsp_implementations, opts)
       vim.keymap.set("n", "<leader>td", function() builtin.diagnostics({ sort_by = "severity" }) end, opts)
       vim.keymap.set('n', '<leader>gw', require('telescope').extensions.git_worktree.git_worktrees, opts)
