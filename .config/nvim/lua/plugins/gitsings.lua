@@ -4,6 +4,8 @@ return {
     lazy = false,
     config = function()
       require('gitsigns').setup {
+        auto_attach = true,
+        signcolumn = true,
         signs = {
           add          = { text = '▏' },
           change       = { text = '▏' },

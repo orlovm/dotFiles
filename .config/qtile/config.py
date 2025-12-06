@@ -172,7 +172,7 @@ keys = [
         desc='Discord'
         ),
     Key([mod], "c",
-        lazy.spawn("telegram-desktop"),
+        lazy.spawn("Telegram"),
         desc='Run chat'
         ),
     Key([mod], "f",

@@ -35,3 +35,5 @@ vim.opt.fillchars = {
   vert = '▕',
   eob = ' '
 }
+
+vim.opt.messagesopt = { "wait:1000", "history:500" }

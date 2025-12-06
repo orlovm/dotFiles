@@ -22,9 +22,8 @@ return {
       Worktree.on_tree_change(function(op, metadata)
         if op == Worktree.Operations.Switch then
           vim.notify("Switched from " .. metadata.prev_path .. " to " .. metadata.path)
-
           if vim.bo.filetype == 'oil' then
-            require('oil').open(metadata.path)
+              require('oil').open(vim.fn.getcwd())
           end
         end
       end)

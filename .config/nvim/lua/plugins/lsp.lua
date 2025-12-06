@@ -12,9 +12,16 @@ local disabled_go_linters = {
 
 return {
   {
+    "folke/lazydev.nvim",
+    ft = "lua",
+    lazy = false,
+    config = function()
+      require("lazydev").setup()
+    end,
+  },
+  {
     "neovim/nvim-lspconfig",
     dependencies = {
-      "folke/neodev.nvim",
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
       "WhoIsSethDaniel/mason-tool-installer.nvim",
@@ -23,18 +30,17 @@ return {
       -- "stevearc/conform.nvim",
     },
     config = function()
-      require("neodev").setup()
-
       local capabilities = nil
       if pcall(require, "cmp_nvim_lsp") then
         capabilities = require("cmp_nvim_lsp").default_capabilities()
       end
 
-      local lspconfig = require "lspconfig"
-
       local servers = {
         bashls = true,
-        lua_ls = true,
+        lua_ls = {
+          cmd = { "lua-language-server" },
+          manual_install = true,
+        },
         ts_ls = true,
         pyright = true,
         vimls = true,
@@ -52,16 +58,15 @@ return {
               staticcheck = true,
             },
           },
-
         },
 
-        -- golangci_lint_ls = {
-        --   cmd = { 'golangci-lint-langserver', '--nolintername' },
-        --   init_options = {
-        --     command = { "golangci-lint", "run", "--default=all", "--disable",
-        --       table.concat(disabled_go_linters, ","), "--output.json.path=stdout" },
-        --   },
-        -- },
+        golangci_lint_ls = {
+          cmd = { 'golangci-lint-langserver', '--nolintername' },
+          -- init_options = {
+          --   command = { "golangci-lint", "run", "--default=all", "--disable",
+          --     table.concat(disabled_go_linters, ","), "--output.json.path=stdout" },
+          -- },
+        },
 
         jsonls = {
           settings = {
@@ -113,7 +118,8 @@ return {
           capabilities = capabilities,
         }, config)
 
-        lspconfig[name].setup(config)
+        vim.lsp.config(name, config)
+        vim.lsp.enable(name)
       end
 
       local disable_semantic_tokens = {
@@ -164,27 +170,23 @@ return {
         end,
       })
 
-      vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-        vim.lsp.diagnostic.on_publish_diagnostics, {
-          severity_sort = true
-        }
-      )
-
       vim.diagnostic.config({
         virtual_text = {
           source = "if_many",
           prefix = '', -- Could be '●', '▎', 'x'
         },
-        signs = true,
         underline = true,
         update_in_insert = false,
         severity_sort = true,
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = "",
+            [vim.diagnostic.severity.WARN] = "",
+            [vim.diagnostic.severity.INFO] = "",
+            [vim.diagnostic.severity.HINT] = "󰌶",
+          },
+        },
       })
-      local signs = { Error = "", Warn = "", Hint = "󰌶", Info = "" }
-      for type, icon in pairs(signs) do
-        local hl = "DiagnosticSign" .. type
-        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-      end
     end,
   },
 }
